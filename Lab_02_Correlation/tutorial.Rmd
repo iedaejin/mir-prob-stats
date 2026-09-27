@@ -1,0 +1,91 @@
+---
+title: "Lab 02 — Correlation"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
+lab_meta <- list(id = "lab02", title = "Correlation")
+lab_prompts <- c(
+  q1 = "GDP per capita and life expectancy in this file are…",
+  q2 = "What does a positive r tell you?",
+  q3 = "Which sentence is acceptable?",
+  q4 = "Name one reason a strong correlation might not be a causal effect."
+)
+```
+
+## What you will do
+
+Read a correlation. Do not turn it into a cause. Then download the `.txt`.
+
+```{r cor-ex, exercise=TRUE, exercise.lines=3}
+cor(world$gdp_per_capita, world$life_expectancy)
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("Positively correlated (r about 0.75).", correct = TRUE),
+  answer("Negatively correlated."),
+  answer("Uncorrelated (r about 0)."),
+  allow_retry = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("Above-average X tends to come with above-average Y in these data.", correct = TRUE),
+  answer("Raising X would raise Y by r units."),
+  answer("The p-value is r."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("In these 50 countries, GDP per capita and life expectancy move together (r about 0.75).", correct = TRUE),
+  answer("The correlation proves that GDP causes longer lives."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "A confounder, reverse causality, or a selected sample.",
+  trim = TRUE
+)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

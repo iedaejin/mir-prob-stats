@@ -1,0 +1,91 @@
+---
+title: "Lab 06 — Reversion to the mean and correlation versus causation"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+set.seed(6)
+n <- 400
+stable <- rnorm(n, 50, 10)
+sim <- tibble(
+  wave1 = stable + rnorm(n, 0, 8),
+  wave2 = stable + rnorm(n, 0, 8)
+)
+lab_meta <- list(id = "lab06", title = "Reversion to the mean")
+lab_prompts <- c(
+  q1 = "If you keep only the top 10% on wave 1, their wave-2 mean usually…",
+  q2 = "That drop happens even when…",
+  q3 = "A cross-section of countries is enough to show reversion to the mean.",
+  q4 = "A ministry credits a program because the worst districts improved next year. What is the rival story?"
+)
+```
+
+## What you will do
+
+See reversion without a treatment, and keep it separate from a causal claim. Download the `.txt`.
+
+```{r extremes, exercise=TRUE, exercise.lines=6}
+hi <- sim |> filter(wave1 >= quantile(wave1, 0.90))
+hi |> summarise(mean_wave1 = mean(wave1), mean_wave2 = mean(wave2))
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("Moves closer to the middle.", correct = TRUE),
+  answer("Stays just as extreme, if there is no program."),
+  answer("Falls only if a program failed."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("There is no treatment. Part of the extreme score was noise.", correct = TRUE),
+  answer("The analyst includes a lagged dependent variable."),
+  allow_retry = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("False. Reversion needs the same units measured twice.", correct = TRUE),
+  answer("True. One year of GDP is two waves."),
+  allow_retry = TRUE
+)
+```
+
+```{r q4}
+question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

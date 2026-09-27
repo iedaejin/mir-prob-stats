@@ -1,0 +1,87 @@
+---
+title: "Lab 04 — Probability through simulation"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+lab_meta <- list(id = "lab04", title = "Probability through simulation")
+lab_prompts <- c(
+  q1 = "A probability of 0.30 for an event means…",
+  q2 = "If you repeat a small sample many times, the estimated share…",
+  q3 = "P(escalation | crisis) compared with P(escalation)…",
+  q4 = "Why is \"conflict is likely\" not yet a probability statement?"
+)
+```
+
+## What you will do
+
+Treat probability as a long-run share, then say what a conditional probability is not. Download the `.txt`.
+
+```{r sim, exercise=TRUE, exercise.lines=5}
+set.seed(4)
+mean(rbinom(20, size = 1, prob = 0.30))
+mean(rbinom(5000, size = 1, prob = 0.30))
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("In a long run of identical trials, the event occurs about 30% of the time.", correct = TRUE),
+  answer("This particular crisis has a 30% chance of being important."),
+  answer("The null hypothesis is false with probability 0.30."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("Jumps around more when n = 20 than when n is large.", correct = TRUE),
+  answer("Equals 0.30 exactly in every sample of size 20."),
+  allow_retry = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("Can be much larger. That is not, by itself, proof that crises cause escalation.", correct = TRUE),
+  answer("Must equal P(crisis | escalation)."),
+  answer("Is an average treatment effect."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

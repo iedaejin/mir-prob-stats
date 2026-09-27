@@ -1,0 +1,91 @@
+---
+title: "Lab 08 — Controlling for confounders"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+aid <- read_csv("data/aid_observational.csv", show_col_types = FALSE)
+lab_meta <- list(id = "lab08", title = "Controlling for confounders")
+lab_prompts <- c(
+  q1 = "In this teaching file, the naive aid coefficient is…",
+  q2 = "After adding need, conflict, and institutions, the aid coefficient…",
+  q3 = "A confounder is…",
+  q4 = "Why is \"we controlled for everything\" not a causal proof?"
+)
+```
+
+## What you will do
+
+Compare a naive association with an adjusted one. Adjustment is not a design. Download the `.txt`.
+
+```{r coefs, exercise=TRUE, exercise.lines=8}
+m1 <- lm(economic_growth_pct ~ aid_per_capita, data = aid)
+m2 <- lm(
+  economic_growth_pct ~ aid_per_capita +
+    baseline_need + conflict_intensity + institutional_quality,
+  data = aid
+)
+c(naive = coef(m1)[["aid_per_capita"]], adjusted = coef(m2)[["aid_per_capita"]])
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("Negative (about -0.02).", correct = TRUE),
+  answer("Positive (about +0.04)."),
+  answer("Exactly zero."),
+  allow_retry = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("Changes sign and becomes positive (about +0.04).", correct = TRUE),
+  answer("Stays negative and identical."),
+  allow_retry = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("A common cause of treatment and outcome that can distort a raw comparison.", correct = TRUE),
+  answer("Any variable you can add to a regression."),
+  answer("The residual."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

@@ -5,9 +5,16 @@ These labs are designed for a Master in International Relations course and follo
 ## Posit Cloud workflow
 1. Create one Posit Cloud assignment per lab folder.
 2. Upload the folder contents to a new RStudio project.
-3. Students open `lab.qmd`, work through the guided analysis, and render to HTML.
-4. Every lab ends with a clearly labeled **DELIVERABLE** section.
-5. Students submit the rendered HTML (or the `.qmd` + HTML, depending on your LMS workflow).
+3. Students open `tutorial.Rmd` and click **Run Document** (needs the `learnr` and `tidyverse` packages).
+4. They answer the questions, type their name, and download the `.txt`.
+5. They upload that text file. It contains their name, the date, and each answer.
+
+The longer `lab.qmd` notebooks stay in each folder as optional guided analysis. The file to submit is the `.txt` from the tutorial.
+
+```r
+install.packages(c("learnr", "tidyverse"))
+rmarkdown::run("tutorial.Rmd")
+```
 
 ## Packages
 All labs use only:

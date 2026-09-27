@@ -1,0 +1,94 @@
+---
+title: "Lab 01 — Causal questions and description"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
+lab_meta <- list(id = "lab01", title = "Causal questions and description")
+lab_prompts <- c(
+  q1 = "Which question is a causal question?",
+  q2 = "Life expectancy: is the mean far from the median?",
+  q3 = "A group comparison of life expectancy by recent conflict is…",
+  q4 = "Rewrite this claim as an effect question: \"Conflict hurts development.\""
+)
+```
+
+## What you will do
+
+Separate a description from an effect question, then summarise one variable. Download the `.txt` and upload it.
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("What is the effect of a peacekeeping mission on civilian deaths?", correct = TRUE),
+  answer("What is the mean life expectancy in this file?"),
+  answer("Which region has the highest median GDP?"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r center, exercise=TRUE, exercise.lines=6}
+world |>
+  summarise(
+    mean_le = mean(life_expectancy),
+    median_le = median(life_expectancy)
+  )
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("No. They are almost the same (about 71 years).", correct = TRUE),
+  answer("Yes. The mean is many years above the median."),
+  allow_retry = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("A description of two groups, not yet a causal effect.", correct = TRUE),
+  answer("An average treatment effect, because the variable is coded 0/1."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "Effect of ___ on ___ for which units?",
+  trim = TRUE
+)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

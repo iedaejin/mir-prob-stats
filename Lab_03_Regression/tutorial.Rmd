@@ -1,0 +1,92 @@
+---
+title: "Lab 03 — Regression for description and prediction"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
+fit <- lm(life_expectancy ~ gdp_per_capita, data = world)
+lab_meta <- list(id = "lab03", title = "Regression for description and prediction")
+lab_prompts <- c(
+  q1 = "The slope of life expectancy on GDP per capita is an association of about…",
+  q2 = "A fitted value is…",
+  q3 = "Which use of the line is honest?",
+  q4 = "Why is a prediction at a GDP far outside this sample risky?"
+)
+```
+
+## What you will do
+
+Read one OLS slope as description, not as an effect of a policy. Then download the `.txt`.
+
+```{r coef-ex, exercise=TRUE, exercise.lines=2}
+coef(fit)
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("0.00018 years per extra dollar of GDP per capita (about 1.8 years per $10,000).", correct = TRUE),
+  answer("71 years, regardless of GDP."),
+  answer("r = 1, a perfect causal effect."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("The life expectancy the line predicts at a country's GDP.", correct = TRUE),
+  answer("The causal effect for that country."),
+  answer("The residual."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("\"In this sample, higher GDP is associated with higher fitted life expectancy.\"", correct = TRUE),
+  answer("\"The regression proves that raising GDP increases life expectancy.\""),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  trim = TRUE
+)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

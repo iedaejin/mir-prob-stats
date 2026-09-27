@@ -1,0 +1,94 @@
+---
+title: "Lab 07 — Randomized experiments"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+exp <- read_csv("data/diplomacy_experiment.csv", show_col_types = FALSE)
+lab_meta <- list(id = "lab07", title = "Randomized experiments")
+lab_prompts <- c(
+  q1 = "What was randomly assigned in this teaching experiment?",
+  q2 = "The difference in mean post-support (message minus control) is about…",
+  q3 = "Under random assignment, that difference estimates…",
+  q4 = "Name one thing this estimate does not automatically give you."
+)
+```
+
+## What you will do
+
+Read a difference in means as an effect of assignment. Download the `.txt`.
+
+```{r means, exercise=TRUE, exercise.lines=6}
+exp |>
+  group_by(treatment_message) |>
+  summarise(mean_y = mean(post_support_diplomatic_cooperation), n = n(), .groups = "drop")
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("A diplomatic message (treatment_message).", correct = TRUE),
+  answer("Support for cooperation after the message."),
+  answer("The participant's age."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("0.8 points on the support scale (about 5.85 vs 5.03).", correct = TRUE),
+  answer("8 percentage points of turnout."),
+  answer("Zero. Randomization forces the means to match."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("The average effect of being assigned the message, in this sample.", correct = TRUE),
+  answer("The effect of actually reading and agreeing with the message, for every diplomat."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "External validity, perfect compliance, or a mechanism.",
+  trim = TRUE
+)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

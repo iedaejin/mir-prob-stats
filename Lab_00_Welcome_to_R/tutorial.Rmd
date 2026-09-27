@@ -1,0 +1,103 @@
+---
+title: "Lab 00 — Welcome to R"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
+lab_meta <- list(id = "lab00", title = "Welcome to R")
+lab_prompts <- c(
+  q1 = "What does one row of this dataset represent?",
+  q2 = "How many countries are in the file?",
+  q3 = "For GDP per capita, which statement is true?",
+  q4 = "In one or two sentences, describe the life-expectancy distribution without using a causal verb."
+)
+```
+
+## What you will do
+
+Load the teaching country file, name the unit of analysis, and read a simple summary. At the end, download a `.txt` with your name, the date, and your answers, and upload that file.
+
+```{r peek, exercise=TRUE, exercise.lines=4}
+glimpse(world)
+nrow(world)
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("One country", correct = TRUE),
+  answer("One year of world population"),
+  answer("One variable"),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("50", correct = TRUE),
+  answer("22"),
+  answer("500"),
+  allow_retry = TRUE
+)
+```
+
+```{r gdp-summary, exercise=TRUE, exercise.lines=5}
+world |>
+  summarise(
+    mean_gdp = mean(gdp_per_capita),
+    median_gdp = median(gdp_per_capita)
+  )
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("The mean is well above the median: the distribution is right-skewed.", correct = TRUE),
+  answer("The mean and the median are the same, so GDP is symmetric."),
+  answer("The median is larger, so most countries are very rich."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "Shape, center, and whether mean or median is more informative.",
+  trim = TRUE
+)
+```
+
+## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

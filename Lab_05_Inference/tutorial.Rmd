@@ -1,0 +1,88 @@
+---
+title: "Lab 05 — Estimation, uncertainty, and hypothesis testing"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+survey <- read_csv("data/survey_attitudes.csv", show_col_types = FALSE)
+two <- survey |> filter(education %in% c("Bachelor", "Postgraduate"))
+lab_meta <- list(id = "lab05", title = "Estimation and hypothesis testing")
+lab_prompts <- c(
+  q1 = "A 95% confidence interval means…",
+  q2 = "A p-value is…",
+  q3 = "Bachelor vs postgraduate mean support in this survey…",
+  q4 = "A tiny, very precise difference can be statistically detectable and still unimportant. Give one IR example."
+)
+```
+
+## What you will do
+
+Read an interval and a test as uncertainty, not as proof of a policy. Download the `.txt`.
+
+```{r test-ex, exercise=TRUE, exercise.lines=3}
+t.test(support_international_cooperation ~ education, data = two)
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("About 95% of such intervals, built the same way, would cover the population parameter.", correct = TRUE),
+  answer("The parameter has a 95% chance of sitting in this one already-computed interval."),
+  answer("95% of the respondents agree."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("The probability, if the null were true, of a result at least this extreme.", correct = TRUE),
+  answer("The probability that the null hypothesis is true."),
+  answer("The size of the effect."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("Postgraduate respondents score higher on average (about 5.7 vs 5.2). That is a description of this sample, not a causal effect of education.", correct = TRUE),
+  answer("The test proves that postgraduate study causes support for cooperation."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q4}
+question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```

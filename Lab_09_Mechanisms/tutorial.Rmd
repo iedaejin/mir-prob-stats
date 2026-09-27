@@ -1,0 +1,95 @@
+---
+title: "Lab 09 — Mechanisms"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+source("../R/lab_submission.R")
+mech <- read_csv("data/mechanism_diplomatic_contact.csv", show_col_types = FALSE)
+lab_meta <- list(id = "lab09", title = "Mechanisms")
+lab_prompts <- c(
+  q1 = "In this file, diplomatic contact is associated with…",
+  q2 = "The contact coefficient in the outcome regression shrinks when trust is added. That pattern…",
+  q3 = "An effect and a mechanism are…",
+  q4 = "Name one rival story for \"trust is the mechanism\" besides mediation."
+)
+```
+
+## What you will do
+
+See the three-regression pattern and refuse to call it proof. Download the `.txt`.
+
+```{r three, exercise=TRUE, exercise.lines=8}
+coef(lm(support_for_cooperation ~ diplomatic_contact, data = mech))[["diplomatic_contact"]]
+coef(lm(trust_in_foreign_partner ~ diplomatic_contact, data = mech))[["diplomatic_contact"]]
+coef(lm(
+  support_for_cooperation ~ diplomatic_contact + trust_in_foreign_partner,
+  data = mech
+))[["diplomatic_contact"]]
+```
+
+```{r q1}
+question(
+  lab_prompts[["q1"]],
+  answer("Higher support for cooperation (about +0.8) and higher trust (about +0.8).", correct = TRUE),
+  answer("Lower trust and lower support."),
+  answer("No association with either."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q2}
+question(
+  lab_prompts[["q2"]],
+  answer("Is consistent with a trust pathway and also with other stories. It is not proof.", correct = TRUE),
+  answer("Proves that trust mediates the effect."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
+)
+```
+
+```{r q3}
+question(
+  lab_prompts[["q3"]],
+  answer("Different claims. Knowing that T moved Y is not knowing how.", correct = TRUE),
+  answer("The same claim, written twice."),
+  allow_retry = TRUE
+)
+```
+
+```{r q4}
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "Confounder, bad control, or measurement overlap.",
+  trim = TRUE
+)
+```
+
+## Submit
+
+```{r submit-ui, echo=FALSE}
+shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
+shiny::downloadButton("download_txt", "Download submission .txt")
+```
+
+```{r submit-server, context="server"}
+output$download_txt <- shiny::downloadHandler(
+  filename = function() lab_submission_filename(input$student_name, lab_meta$id),
+  content = function(file) {
+    write_lab_submission(
+      path = file,
+      name = input$student_name,
+      lab_id = lab_meta$id,
+      lab_title = lab_meta$title,
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      prompts = lab_prompts
+    )
+  }
+)
+```
