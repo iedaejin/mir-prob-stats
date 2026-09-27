@@ -1,0 +1,110 @@
+---
+title: "Lab 02 — Correlation"
+subtitle: "Sessions 4–5: Correlation, Parts 1–2"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+You will investigate association between two variables using scatterplots and correlation, and practice separating **association** from **causal interpretation**.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+world <- read_csv("data/country_indicators.csv")
+```
+
+## 2. Visual association
+
+Question:
+
+> Are richer countries more democratic?
+
+```{r}
+ggplot(world, aes(x = gdp_per_capita, y = democracy_score)) +
+  geom_point() +
+  labs(
+    title = "GDP per capita and democracy",
+    x = "GDP per capita",
+    y = "Democracy score"
+  )
+```
+
+GDP per capita is strongly right-skewed. Try the log scale:
+
+```{r}
+ggplot(world, aes(x = log(gdp_per_capita), y = democracy_score)) +
+  geom_point() +
+  labs(
+    title = "Economic development and democracy",
+    x = "Log GDP per capita",
+    y = "Democracy score"
+  )
+```
+
+Which plot is easier to interpret?
+
+## 3. Correlation coefficient
+
+```{r}
+cor(log(world$gdp_per_capita), world$democracy_score)
+```
+
+Interpret the **sign** and approximate **strength** of the association.
+
+## 4. Correlation is not a causal effect
+
+Complete the sentence:
+
+> A positive correlation between GDP and democracy does not by itself show that increasing GDP would cause democracy to increase because ...
+
+Give at least two possible explanations.
+
+## 5. Explore another relationship
+
+Choose one pair:
+
+- democracy and life expectancy;
+- democracy and military spending;
+- trade openness and GDP;
+- UN voting alignment and democracy.
+
+Create a scatterplot and calculate the correlation.
+
+```{r}
+# Your code here
+```
+
+## 6. Spot the outliers
+
+Use the plot to identify observations that do not follow the overall pattern.
+
+```{r}
+world |>
+  select(country, gdp_per_capita, democracy_score) |>
+  arrange(desc(gdp_per_capita))
+```
+
+Do unusual cases weaken, strengthen, or complicate your substantive argument?
+
+## DELIVERABLE — Association Brief
+
+Produce a **150–220 word Association Brief** answering one international-relations question.
+
+Include:
+
+- one labelled scatterplot;
+- the correlation coefficient;
+- a plain-language interpretation of direction and strength;
+- one observation about an unusual country/case;
+- a final paragraph headed **“Causal interpretation”** explaining why the result does or does not support a causal claim.
+
+Submit the rendered HTML.

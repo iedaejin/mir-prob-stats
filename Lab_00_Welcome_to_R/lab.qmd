@@ -1,0 +1,110 @@
+---
+title: "Lab 00 — Welcome to R"
+subtitle: "Session 1: Introduction"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+By the end of this lab you should be able to:
+
+- open and run an R code chunk;
+- import a `.csv` file;
+- inspect a data frame;
+- calculate a simple summary;
+- make a basic plot with `ggplot2`;
+- render a Quarto document to HTML.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+```
+
+## 2. Import the data
+
+The dataset contains synthetic indicators for 50 countries. These are **teaching data**, not real country estimates.
+
+```{r}
+world <- read_csv("data/country_indicators.csv")
+```
+
+Inspect the first rows:
+
+```{r}
+head(world)
+```
+
+How many countries and variables are in the dataset?
+
+```{r}
+dim(world)
+```
+
+## 3. Ask R a simple question
+
+What is the average democracy score?
+
+```{r}
+mean(world$democracy_score)
+```
+
+Now calculate the median democracy score.
+
+```{r}
+# Your code here
+```
+
+## 4. Make your first figure
+
+```{r}
+ggplot(world, aes(x = democracy_score)) +
+  geom_histogram(bins = 10) +
+  labs(
+    title = "Distribution of democracy scores",
+    x = "Democracy score",
+    y = "Number of countries"
+  )
+```
+
+## 5. Filter the data
+
+Choose one region and inspect only those countries.
+
+```{r}
+world |>
+  filter(region == "Europe")
+```
+
+Change `"Europe"` to another region.
+
+## 6. A first substantive question
+
+Which five countries in this teaching dataset have the highest GDP per capita?
+
+```{r}
+world |>
+  arrange(desc(gdp_per_capita)) |>
+  select(country, gdp_per_capita) |>
+  slice_head(n = 5)
+```
+
+## DELIVERABLE — Your first data snapshot
+
+Create a short **Data Snapshot** containing:
+
+1. the number of countries in the dataset;
+2. the mean and median of one variable of your choice;
+3. one histogram of that variable;
+4. **80–120 words** explaining what the distribution looks like and whether the mean or median is more informative.
+
+Render the notebook to HTML and submit the HTML file.
+
+> **Before submitting:** check that your code runs from top to bottom and that your figure is visible.

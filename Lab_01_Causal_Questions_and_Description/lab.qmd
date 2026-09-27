@@ -1,0 +1,117 @@
+---
+title: "Lab 01 — Causal Questions and Describing Data"
+subtitle: "Sessions 2–3: Causation; Describing a Single Variable"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+This lab follows the course sequence from **causal questions** to **describing a single variable**.
+
+You will learn to distinguish a causal question from a descriptive question, identify an outcome and an explanatory variable, and summarize one variable using numerical and graphical tools.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+world <- read_csv("data/country_indicators.csv")
+```
+
+## 2. From a substantive question to variables
+
+Consider the question:
+
+> Does economic development increase democratic governance?
+
+Write down:
+
+- **Outcome (Y):**
+- **Explanatory variable / treatment (X):**
+- **Two possible confounders:**
+- **Why is this a causal rather than purely descriptive question?**
+
+Do not run any model yet.
+
+## 3. Describe one variable first
+
+Start with `democracy_score`.
+
+```{r}
+world |>
+  summarise(
+    n = n(),
+    mean = mean(democracy_score),
+    median = median(democracy_score),
+    sd = sd(democracy_score),
+    min = min(democracy_score),
+    max = max(democracy_score)
+  )
+```
+
+What does each statistic tell you?
+
+## 4. Look at the distribution
+
+```{r}
+ggplot(world, aes(x = democracy_score)) +
+  geom_histogram(bins = 10) +
+  labs(
+    title = "Democracy scores across countries",
+    x = "Democracy score",
+    y = "Count"
+  )
+```
+
+Is the distribution symmetric, skewed, clustered, or unusual?
+
+## 5. Compare groups descriptively
+
+```{r}
+world |>
+  group_by(region) |>
+  summarise(
+    mean_democracy = mean(democracy_score),
+    median_democracy = median(democracy_score),
+    n = n()
+  ) |>
+  arrange(desc(mean_democracy))
+```
+
+Why should we be cautious about interpreting these regional differences causally?
+
+## 6. Choose your own variable
+
+Choose one of:
+
+- `gdp_per_capita`
+- `life_expectancy`
+- `trade_openness`
+- `military_spending_pct_gdp`
+- `un_voting_alignment`
+
+Create:
+
+1. a numerical summary;
+2. a histogram;
+3. a short substantive interpretation.
+
+## DELIVERABLE — Country Data Brief
+
+Submit a **one-page Country Data Brief** inside your rendered HTML.
+
+It must contain:
+
+- a clear descriptive research question;
+- **one figure**;
+- **at least three descriptive statistics**;
+- **120–180 words** interpreting the distribution;
+- one sentence explaining what **cannot** be inferred causally from the description.
+
+Your brief should be understandable to a policy reader who has not seen your R code.

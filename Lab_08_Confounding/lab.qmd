@@ -1,0 +1,110 @@
+---
+title: "Lab 08 — Controlling for Confounders"
+subtitle: "Sessions 18–19: Controlling for Confounders, Parts 1–2"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+You will analyze observational data, see how confounding can change an estimate, and compare unadjusted and adjusted regression models.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+aid <- read_csv("data/aid_observational.csv")
+```
+
+The data are synthetic and represent country-level foreign-aid allocations.
+
+Question:
+
+> Does receiving more foreign aid increase economic growth?
+
+## 2. Start with the raw association
+
+```{r}
+ggplot(aid, aes(x = aid_per_capita, y = economic_growth_pct)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Foreign aid and economic growth",
+    x = "Aid per capita",
+    y = "Economic growth (%)"
+  )
+```
+
+## 3. Naive model
+
+```{r}
+m1 <- lm(economic_growth_pct ~ aid_per_capita, data = aid)
+summary(m1)
+```
+
+Interpret the aid coefficient.
+
+## 4. Think about selection into treatment
+
+Countries do not receive foreign aid randomly.
+
+In this teaching dataset, aid allocation is related to:
+
+- baseline need;
+- conflict intensity;
+- institutional quality.
+
+Explain why these variables might affect both aid receipt and subsequent economic growth.
+
+## 5. Adjust for confounders
+
+```{r}
+m2 <- lm(
+  economic_growth_pct ~ aid_per_capita +
+    baseline_need +
+    conflict_intensity +
+    institutional_quality,
+  data = aid
+)
+
+summary(m2)
+```
+
+Compare the aid coefficient in `m1` and `m2`.
+
+## 6. Model comparison
+
+```{r}
+coef(m1)["aid_per_capita"]
+coef(m2)["aid_per_capita"]
+```
+
+Does adjustment change sign, size, or uncertainty?
+
+## 7. What assumptions remain?
+
+Regression adjustment does not automatically solve confounding.
+
+Name at least two assumptions or concerns that remain.
+
+## DELIVERABLE — Confounding Memo
+
+Submit a **Model Comparison Memo** containing:
+
+- one scatterplot;
+- the aid coefficient from the naive model;
+- the aid coefficient from the adjusted model;
+- a short table or clearly formatted comparison;
+- **200–280 words** explaining:
+  - why treatment assignment is not random;
+  - which variables are potential confounders;
+  - why the estimates changed;
+  - whether you are willing to make a causal claim, and under what assumptions.
+
+Submit the rendered HTML.

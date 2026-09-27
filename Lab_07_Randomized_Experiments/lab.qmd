@@ -1,0 +1,108 @@
+---
+title: "Lab 07 — Randomized Experiments"
+subtitle: "Sessions 16–17: Randomized Experiments, Parts 1–2"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+You will analyze a randomized experiment, check treatment balance, estimate a treatment effect, and explain why randomization supports causal inference.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+exp <- read_csv("data/diplomacy_experiment.csv")
+```
+
+The data are synthetic. Participants were randomly assigned to either:
+
+- `treatment_message = 1`: a diplomatic-cooperation message;
+- `treatment_message = 0`: a control message.
+
+Outcome: support for diplomatic cooperation after treatment.
+
+## 2. Check treatment allocation
+
+```{r}
+exp |>
+  count(treatment_message)
+```
+
+## 3. Check balance
+
+Randomization should make pretreatment variables similar *on average*.
+
+```{r}
+exp |>
+  group_by(treatment_message) |>
+  summarise(
+    mean_age = mean(age),
+    mean_prior_support = mean(prior_support),
+    n = n()
+  )
+```
+
+Are the groups exactly identical? Do they need to be?
+
+## 4. Difference in means
+
+```{r}
+exp |>
+  group_by(treatment_message) |>
+  summarise(
+    mean_post_support = mean(post_support_diplomatic_cooperation),
+    n = n()
+  )
+```
+
+Calculate the difference manually.
+
+## 5. Regression estimate
+
+```{r}
+m_exp <- lm(
+  post_support_diplomatic_cooperation ~ treatment_message,
+  data = exp
+)
+
+summary(m_exp)
+confint(m_exp)
+```
+
+How does the treatment coefficient relate to the difference in means?
+
+## 6. Optional precision adjustment
+
+```{r}
+m_exp_adj <- lm(
+  post_support_diplomatic_cooperation ~ treatment_message + prior_support,
+  data = exp
+)
+
+summary(m_exp_adj)
+```
+
+Why is `prior_support` not needed to *create* causal identification under random assignment?
+
+## DELIVERABLE — Experimental Results Brief
+
+Write a **200–250 word brief** for a policymaker.
+
+Include:
+
+- treatment and control means;
+- estimated average treatment effect;
+- 95% confidence interval;
+- a one-sentence statistical conclusion;
+- a one-sentence substantive conclusion;
+- a paragraph answering: **Why is the causal interpretation stronger here than in an observational correlation?**
+
+Submit the rendered HTML.

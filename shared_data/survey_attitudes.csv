@@ -1,0 +1,501 @@
+respondent_id,age,education,income_index,ideology_0_left_10_right,support_international_cooperation,perceived_security_threat
+1,47,Secondary or less,54.2,5.5,5.0,3.4
+2,68,Bachelor,66.4,5.1,7.0,3.2
+3,63,Secondary or less,56.6,4.9,7.0,0.9
+4,69,Bachelor,74.9,6.6,6.5,6.0
+5,46,Postgraduate,82.8,4.1,6.2,5.0
+6,45,Secondary or less,48.4,6.5,2.7,4.3
+7,35,Secondary or less,74.3,1.6,4.9,5.3
+8,61,Bachelor,67.0,5.6,6.2,3.9
+9,68,Secondary or less,40.9,5.6,4.0,5.6
+10,32,Bachelor,15.6,6.8,4.8,5.1
+11,62,Secondary or less,69.8,4.0,3.9,2.9
+12,62,Postgraduate,62.8,8.1,8.0,4.2
+13,48,Secondary or less,51.4,3.3,5.1,5.9
+14,70,Secondary or less,63.0,2.2,6.4,2.0
+15,61,Secondary or less,37.2,8.2,4.9,4.8
+16,58,Bachelor,49.0,5.7,4.9,2.8
+17,62,Bachelor,46.8,8.9,4.4,6.5
+18,36,Secondary or less,36.0,4.5,7.0,6.2
+19,71,Postgraduate,46.9,4.8,4.6,5.0
+20,49,Postgraduate,29.6,3.2,7.4,6.1
+21,52,Bachelor,51.1,4.6,8.1,3.9
+22,53,Secondary or less,56.6,2.9,7.6,5.1
+23,52,Postgraduate,26.4,7.0,3.8,3.5
+24,49,Secondary or less,53.2,4.6,6.5,2.2
+25,52,Bachelor,62.1,3.2,4.6,5.2
+26,57,Bachelor,72.0,5.4,4.5,3.7
+27,69,Secondary or less,60.8,6.7,5.3,1.1
+28,62,Bachelor,47.7,7.2,3.1,7.6
+29,29,Secondary or less,32.1,6.8,5.6,0.0
+30,58,Secondary or less,21.2,5.9,5.5,5.1
+31,40,Secondary or less,46.6,2.8,2.6,3.5
+32,35,Postgraduate,41.5,3.5,5.7,2.9
+33,66,Bachelor,34.1,6.1,5.2,4.2
+34,55,Postgraduate,63.6,4.4,4.0,8.3
+35,52,Bachelor,53.9,8.1,4.6,5.2
+36,77,Secondary or less,44.8,3.5,4.3,5.3
+37,78,Secondary or less,36.6,4.6,4.1,2.5
+38,45,Secondary or less,15.0,7.3,4.1,4.5
+39,31,Secondary or less,35.7,6.2,5.3,5.9
+40,74,Bachelor,70.8,5.4,7.6,5.0
+41,75,Bachelor,60.3,1.8,5.2,5.6
+42,33,Postgraduate,51.3,6.4,6.2,3.7
+43,67,Secondary or less,62.8,2.6,3.6,5.0
+44,31,Secondary or less,22.5,5.8,5.8,2.2
+45,47,Bachelor,54.2,6.7,5.0,3.2
+46,52,Secondary or less,54.7,3.0,7.4,2.6
+47,75,Secondary or less,74.0,5.7,7.6,2.8
+48,47,Secondary or less,26.7,3.4,6.8,3.0
+49,58,Postgraduate,19.9,7.1,5.3,5.9
+50,54,Bachelor,90.6,2.5,8.1,4.8
+51,20,Bachelor,42.2,6.2,4.0,6.9
+52,53,Secondary or less,73.8,8.0,5.8,4.9
+53,67,Bachelor,50.6,5.0,5.4,7.1
+54,71,Postgraduate,34.4,1.9,3.7,2.7
+55,42,Bachelor,55.5,4.5,3.8,5.2
+56,59,Secondary or less,72.4,6.5,3.8,4.0
+57,36,Secondary or less,46.0,6.6,7.4,5.7
+58,20,Secondary or less,60.4,10.0,3.0,5.0
+59,65,Bachelor,74.6,4.4,2.9,5.7
+60,32,Postgraduate,36.1,3.5,5.5,6.8
+61,68,Secondary or less,57.3,3.8,9.4,4.6
+62,26,Postgraduate,12.5,9.5,1.7,4.3
+63,71,Postgraduate,40.6,5.2,4.4,5.2
+64,58,Postgraduate,34.4,7.0,7.7,3.2
+65,21,Secondary or less,41.4,5.1,4.7,5.7
+66,52,Postgraduate,26.6,6.3,4.7,5.6
+67,40,Bachelor,74.9,5.3,5.8,5.1
+68,49,Bachelor,55.7,2.8,6.9,6.3
+69,42,Secondary or less,37.3,3.4,6.3,4.0
+70,30,Bachelor,86.1,3.7,4.6,5.8
+71,69,Bachelor,87.6,6.4,3.5,6.9
+72,75,Bachelor,38.6,1.8,4.4,5.8
+73,42,Bachelor,94.7,1.7,6.3,6.2
+74,40,Bachelor,80.3,6.5,5.1,5.5
+75,57,Postgraduate,54.5,6.5,7.9,6.0
+76,45,Bachelor,4.3,6.9,3.7,5.8
+77,46,Secondary or less,12.8,10.0,7.0,5.0
+78,25,Postgraduate,60.4,3.4,4.9,5.9
+79,45,Secondary or less,50.5,2.4,7.1,3.2
+80,75,Bachelor,58.6,2.4,9.1,4.5
+81,61,Bachelor,28.1,1.3,7.4,4.5
+82,33,Secondary or less,56.6,4.0,6.2,3.4
+83,76,Secondary or less,69.3,2.9,4.0,5.2
+84,18,Bachelor,58.0,1.0,6.2,4.7
+85,25,Bachelor,68.7,9.0,9.5,4.8
+86,56,Postgraduate,62.5,6.9,6.7,3.5
+87,28,Secondary or less,79.9,4.0,6.9,4.5
+88,44,Bachelor,44.6,7.2,0.5,3.2
+89,40,Bachelor,43.1,5.9,3.0,6.3
+90,61,Postgraduate,63.1,1.3,4.4,5.5
+91,39,Secondary or less,28.4,8.5,2.5,3.4
+92,73,Bachelor,44.7,3.7,5.1,6.5
+93,71,Bachelor,50.7,7.8,3.7,8.3
+94,62,Secondary or less,45.5,3.4,5.1,4.8
+95,37,Postgraduate,60.7,6.5,4.2,4.9
+96,40,Secondary or less,45.3,4.4,6.3,5.2
+97,25,Bachelor,47.7,3.8,2.6,5.3
+98,21,Secondary or less,79.8,6.5,4.1,6.0
+99,23,Bachelor,39.5,5.0,6.5,5.1
+100,29,Postgraduate,64.9,1.8,5.3,6.3
+101,52,Secondary or less,41.0,1.8,3.9,5.3
+102,68,Postgraduate,38.7,2.6,7.2,7.8
+103,62,Postgraduate,45.8,2.7,5.0,5.0
+104,26,Bachelor,56.4,4.4,4.4,6.0
+105,44,Secondary or less,44.5,6.5,5.0,6.2
+106,42,Bachelor,43.1,6.7,5.3,3.6
+107,63,Bachelor,41.6,3.1,6.5,1.9
+108,69,Secondary or less,75.9,5.4,5.7,1.8
+109,44,Bachelor,49.3,6.3,6.0,7.6
+110,28,Secondary or less,55.5,4.2,4.2,4.5
+111,55,Secondary or less,43.3,4.9,3.5,4.4
+112,28,Secondary or less,37.1,8.5,5.9,4.1
+113,31,Bachelor,21.7,6.7,6.0,3.3
+114,18,Bachelor,59.5,6.5,1.7,7.9
+115,79,Postgraduate,64.4,5.8,5.5,7.0
+116,74,Bachelor,64.0,8.6,6.9,3.6
+117,42,Secondary or less,36.3,2.8,7.7,4.8
+118,27,Bachelor,48.7,3.0,3.6,6.0
+119,46,Bachelor,49.0,3.6,4.2,7.2
+120,42,Postgraduate,39.5,4.4,4.6,3.5
+121,38,Secondary or less,70.3,6.6,8.1,3.4
+122,41,Secondary or less,56.6,4.7,6.3,4.2
+123,23,Secondary or less,30.5,5.4,4.5,6.0
+124,47,Bachelor,25.5,8.7,5.9,4.0
+125,49,Postgraduate,64.0,0.0,4.4,4.7
+126,41,Secondary or less,36.4,6.5,6.7,5.5
+127,30,Bachelor,64.0,5.0,5.4,4.8
+128,40,Postgraduate,35.9,2.3,7.0,4.5
+129,70,Bachelor,37.1,8.7,4.6,5.3
+130,37,Bachelor,47.7,3.6,5.8,4.5
+131,23,Bachelor,63.0,8.3,5.1,5.3
+132,55,Bachelor,63.5,4.4,6.5,3.3
+133,39,Secondary or less,53.0,4.5,5.1,5.5
+134,51,Secondary or less,82.4,5.0,3.0,6.3
+135,72,Bachelor,48.7,6.6,4.9,4.1
+136,47,Bachelor,81.4,5.6,3.7,3.5
+137,22,Secondary or less,69.7,4.9,8.7,5.9
+138,50,Bachelor,23.0,4.4,3.0,4.9
+139,23,Bachelor,51.1,5.7,5.5,2.9
+140,19,Bachelor,40.0,7.2,4.3,5.0
+141,45,Postgraduate,84.2,4.1,6.9,5.6
+142,36,Secondary or less,41.8,2.2,5.7,7.6
+143,47,Bachelor,53.6,2.8,2.8,6.2
+144,66,Secondary or less,64.0,7.3,4.0,2.8
+145,60,Bachelor,47.5,7.3,5.1,5.6
+146,72,Secondary or less,31.5,2.4,6.3,3.9
+147,21,Bachelor,29.2,2.7,6.3,10.0
+148,57,Secondary or less,66.2,2.7,5.1,6.4
+149,52,Secondary or less,73.3,4.9,6.7,6.3
+150,36,Secondary or less,28.5,5.8,5.0,4.6
+151,43,Bachelor,39.4,5.0,1.4,9.1
+152,49,Secondary or less,40.1,8.8,1.9,5.4
+153,40,Postgraduate,37.8,7.7,5.6,3.9
+154,55,Postgraduate,66.0,6.2,8.5,2.6
+155,47,Postgraduate,28.5,2.5,4.0,7.9
+156,31,Secondary or less,51.3,1.0,4.6,8.1
+157,69,Bachelor,53.0,4.4,4.7,4.2
+158,31,Bachelor,66.3,4.5,3.9,6.0
+159,79,Secondary or less,66.4,7.0,7.4,5.8
+160,46,Secondary or less,62.3,4.3,6.0,5.3
+161,61,Secondary or less,46.9,3.0,7.6,5.4
+162,49,Bachelor,72.7,7.2,1.7,6.7
+163,50,Postgraduate,44.8,6.2,2.5,4.6
+164,77,Secondary or less,55.0,7.5,3.4,3.2
+165,78,Secondary or less,27.2,2.6,4.5,5.3
+166,53,Postgraduate,35.4,6.9,4.8,5.1
+167,60,Secondary or less,57.2,4.4,6.7,4.1
+168,19,Secondary or less,46.0,4.0,6.6,6.0
+169,51,Bachelor,53.2,5.0,7.0,2.5
+170,38,Secondary or less,63.8,8.2,4.6,6.0
+171,59,Secondary or less,35.6,3.4,2.4,6.2
+172,65,Secondary or less,65.8,3.0,5.0,6.9
+173,24,Bachelor,61.6,2.3,5.4,2.6
+174,27,Secondary or less,44.0,7.0,6.6,4.6
+175,40,Postgraduate,40.8,5.8,8.9,5.1
+176,43,Bachelor,37.7,4.8,4.1,4.8
+177,77,Postgraduate,54.0,7.1,3.7,5.3
+178,32,Bachelor,20.7,3.2,6.5,3.7
+179,66,Bachelor,16.1,7.1,4.9,4.7
+180,68,Secondary or less,52.0,5.5,4.7,3.5
+181,40,Bachelor,46.3,7.0,6.2,3.4
+182,72,Secondary or less,64.2,4.4,1.8,1.6
+183,58,Postgraduate,53.9,2.9,8.2,3.5
+184,65,Bachelor,60.1,9.5,7.1,4.3
+185,33,Secondary or less,65.4,5.1,6.5,5.9
+186,30,Bachelor,57.9,5.9,5.1,7.6
+187,57,Secondary or less,67.5,4.1,5.6,3.8
+188,26,Secondary or less,59.4,3.6,6.0,5.0
+189,48,Secondary or less,53.2,4.7,8.6,5.7
+190,56,Secondary or less,40.3,5.0,4.5,7.1
+191,50,Secondary or less,36.9,5.7,3.9,3.8
+192,32,Secondary or less,54.5,7.3,6.3,7.2
+193,68,Secondary or less,65.0,8.3,5.5,4.6
+194,37,Postgraduate,63.8,7.8,7.8,1.7
+195,49,Secondary or less,74.6,1.6,5.1,4.1
+196,25,Postgraduate,45.6,3.7,8.8,5.2
+197,48,Bachelor,47.9,2.3,5.1,6.6
+198,47,Bachelor,54.9,3.6,4.1,5.5
+199,78,Bachelor,69.5,7.7,7.7,3.3
+200,19,Secondary or less,29.4,3.1,5.9,7.1
+201,39,Secondary or less,86.2,6.1,4.8,2.8
+202,74,Bachelor,67.3,4.4,7.8,3.8
+203,42,Bachelor,45.3,3.6,6.9,5.8
+204,68,Postgraduate,51.8,4.0,3.0,3.7
+205,26,Postgraduate,65.0,3.3,5.8,5.7
+206,49,Bachelor,47.6,4.4,6.2,3.6
+207,28,Secondary or less,45.5,3.7,5.0,4.0
+208,28,Secondary or less,54.7,5.7,3.0,5.5
+209,47,Bachelor,49.6,7.6,6.0,2.4
+210,44,Postgraduate,73.9,7.8,4.0,5.5
+211,59,Secondary or less,64.8,2.3,6.2,3.0
+212,43,Bachelor,52.6,3.2,6.3,5.0
+213,34,Postgraduate,50.5,5.1,2.8,5.0
+214,43,Bachelor,51.9,3.0,5.6,5.0
+215,31,Secondary or less,78.3,1.4,4.7,2.7
+216,78,Secondary or less,36.2,5.1,6.6,1.4
+217,39,Secondary or less,42.0,3.3,7.4,6.7
+218,57,Bachelor,35.8,3.5,5.1,5.9
+219,24,Secondary or less,28.8,6.7,6.8,3.9
+220,44,Secondary or less,73.5,6.1,5.5,4.2
+221,33,Bachelor,69.4,3.7,7.9,1.9
+222,57,Bachelor,48.3,8.0,7.3,2.8
+223,53,Secondary or less,55.3,5.7,3.9,7.9
+224,60,Secondary or less,53.3,6.0,6.2,6.4
+225,52,Postgraduate,25.4,5.5,5.7,5.9
+226,40,Bachelor,51.2,6.9,5.8,3.2
+227,73,Bachelor,39.7,3.5,8.9,3.1
+228,33,Secondary or less,53.9,2.8,5.1,1.4
+229,31,Bachelor,44.2,2.4,6.6,1.9
+230,33,Secondary or less,44.1,3.7,5.6,4.1
+231,77,Secondary or less,42.7,5.8,4.4,3.6
+232,52,Secondary or less,64.8,5.3,4.7,5.3
+233,54,Postgraduate,71.6,3.0,7.4,6.7
+234,66,Postgraduate,66.2,4.8,4.7,6.7
+235,25,Secondary or less,72.6,3.3,5.0,2.3
+236,58,Bachelor,40.5,5.7,5.4,4.3
+237,61,Secondary or less,53.3,7.2,4.4,2.9
+238,35,Postgraduate,73.5,8.7,7.9,5.9
+239,69,Postgraduate,35.6,5.3,3.6,3.0
+240,74,Bachelor,62.8,5.6,4.4,4.5
+241,40,Postgraduate,66.6,5.6,7.7,2.4
+242,48,Bachelor,54.2,1.3,6.5,3.9
+243,63,Bachelor,75.9,4.6,2.0,4.8
+244,73,Secondary or less,61.1,5.8,3.7,7.0
+245,33,Secondary or less,68.1,6.7,6.7,2.9
+246,41,Secondary or less,32.7,4.1,5.4,4.4
+247,61,Secondary or less,59.1,6.7,8.3,3.5
+248,24,Postgraduate,24.7,2.2,6.1,7.9
+249,60,Bachelor,69.8,8.5,5.6,4.0
+250,32,Secondary or less,47.3,6.1,8.1,5.6
+251,18,Postgraduate,73.3,2.8,5.9,6.0
+252,48,Secondary or less,57.6,2.7,3.4,6.7
+253,49,Bachelor,110.0,1.9,4.2,2.0
+254,18,Bachelor,35.9,7.5,4.9,4.3
+255,72,Secondary or less,51.6,7.3,6.6,5.8
+256,52,Secondary or less,45.6,7.9,2.6,5.3
+257,55,Secondary or less,52.1,8.7,4.6,4.2
+258,32,Bachelor,61.0,5.1,4.7,2.4
+259,27,Secondary or less,60.1,6.8,8.1,4.3
+260,31,Secondary or less,46.5,6.2,4.6,6.2
+261,59,Bachelor,59.2,4.2,7.3,4.9
+262,69,Secondary or less,28.2,7.5,5.0,4.4
+263,72,Secondary or less,51.8,1.9,4.6,2.7
+264,65,Bachelor,38.2,4.9,5.2,3.7
+265,23,Secondary or less,33.2,5.6,6.1,4.9
+266,53,Secondary or less,42.4,2.5,8.4,7.5
+267,78,Bachelor,27.1,5.5,5.0,5.3
+268,27,Secondary or less,22.3,6.7,1.1,4.7
+269,23,Bachelor,54.7,4.2,5.7,4.5
+270,79,Bachelor,23.4,2.8,4.8,5.5
+271,70,Secondary or less,50.0,5.2,4.7,5.8
+272,28,Postgraduate,52.8,5.0,6.1,3.8
+273,21,Secondary or less,50.1,7.2,3.0,7.1
+274,21,Secondary or less,34.5,2.5,5.5,5.0
+275,49,Bachelor,76.5,4.0,4.9,4.0
+276,62,Postgraduate,34.1,1.7,7.0,3.9
+277,45,Postgraduate,37.1,5.7,3.4,7.7
+278,27,Bachelor,24.3,7.4,4.7,5.6
+279,57,Secondary or less,44.7,6.6,3.8,8.0
+280,21,Secondary or less,69.2,8.3,6.8,6.2
+281,19,Bachelor,26.8,2.2,7.2,3.7
+282,22,Bachelor,53.9,4.4,4.6,5.0
+283,20,Bachelor,46.9,1.4,6.4,2.5
+284,19,Bachelor,23.7,4.9,4.3,5.8
+285,76,Bachelor,54.9,2.2,3.2,4.6
+286,74,Secondary or less,29.1,4.4,5.8,3.3
+287,37,Postgraduate,32.0,0.8,5.4,1.6
+288,48,Secondary or less,56.3,3.3,3.1,5.2
+289,19,Bachelor,53.3,4.8,5.3,3.5
+290,44,Postgraduate,72.5,5.8,5.6,3.6
+291,21,Secondary or less,39.0,4.5,6.8,3.8
+292,54,Secondary or less,21.8,5.1,2.6,3.0
+293,39,Postgraduate,24.0,5.2,2.5,5.1
+294,49,Secondary or less,27.2,8.4,7.2,3.8
+295,61,Bachelor,56.2,4.5,3.6,5.2
+296,56,Bachelor,24.1,3.5,0.9,4.9
+297,52,Postgraduate,80.4,5.1,5.7,8.7
+298,19,Secondary or less,52.9,2.5,4.7,7.2
+299,40,Bachelor,35.8,5.6,3.9,5.2
+300,32,Secondary or less,45.3,6.0,7.1,4.0
+301,66,Bachelor,67.0,7.1,3.8,6.3
+302,52,Secondary or less,9.4,3.8,6.3,5.3
+303,79,Postgraduate,35.7,5.1,7.2,4.9
+304,68,Bachelor,78.8,7.2,2.9,5.0
+305,21,Postgraduate,39.3,1.8,7.2,3.0
+306,36,Bachelor,62.5,4.0,2.8,5.2
+307,19,Secondary or less,37.4,4.9,4.4,2.3
+308,26,Secondary or less,52.6,10.0,5.2,0.8
+309,79,Secondary or less,70.2,4.0,6.6,3.6
+310,25,Bachelor,59.4,4.4,3.0,8.0
+311,51,Bachelor,58.4,1.5,4.1,2.7
+312,61,Bachelor,55.1,5.3,7.4,4.1
+313,53,Postgraduate,72.8,6.5,6.8,4.9
+314,22,Secondary or less,40.0,6.1,4.9,3.0
+315,72,Bachelor,54.4,3.2,3.6,2.9
+316,50,Secondary or less,48.6,6.5,5.3,6.4
+317,28,Secondary or less,65.7,6.0,4.6,2.4
+318,75,Postgraduate,72.7,9.5,7.3,5.4
+319,63,Bachelor,35.2,4.6,3.7,6.5
+320,31,Bachelor,19.0,5.2,4.4,4.1
+321,64,Bachelor,78.2,4.0,4.7,5.8
+322,49,Bachelor,15.4,6.0,5.2,5.4
+323,21,Secondary or less,59.4,4.3,5.8,4.7
+324,63,Secondary or less,49.0,3.3,5.3,4.3
+325,78,Secondary or less,28.4,5.6,5.9,3.8
+326,29,Bachelor,64.9,5.2,4.6,4.8
+327,53,Bachelor,77.3,3.4,5.0,6.0
+328,18,Bachelor,53.1,2.6,3.6,5.2
+329,73,Bachelor,21.9,7.7,4.6,4.2
+330,67,Secondary or less,42.2,2.5,6.7,4.5
+331,69,Bachelor,43.9,6.5,6.0,3.6
+332,37,Postgraduate,66.5,2.1,8.9,3.1
+333,34,Secondary or less,46.2,5.9,4.5,6.0
+334,23,Postgraduate,30.9,5.7,8.3,5.3
+335,46,Postgraduate,43.7,6.0,5.4,3.0
+336,75,Bachelor,42.7,5.2,4.1,6.2
+337,79,Secondary or less,70.1,4.2,4.9,6.7
+338,32,Bachelor,39.5,2.4,4.6,4.7
+339,63,Bachelor,47.7,5.0,5.4,3.6
+340,46,Bachelor,42.4,2.6,4.3,5.0
+341,60,Secondary or less,47.7,5.8,5.3,4.4
+342,52,Bachelor,50.9,4.1,6.5,3.7
+343,69,Secondary or less,44.3,5.2,5.3,1.9
+344,22,Bachelor,58.3,4.4,9.2,2.8
+345,26,Postgraduate,69.4,4.6,3.4,5.0
+346,26,Bachelor,91.2,7.1,6.1,7.3
+347,41,Bachelor,46.4,5.1,6.8,4.4
+348,40,Secondary or less,33.2,7.6,4.5,7.4
+349,68,Postgraduate,59.0,8.1,6.1,4.0
+350,49,Bachelor,68.4,2.0,6.7,6.2
+351,27,Bachelor,51.2,5.7,3.3,7.8
+352,32,Secondary or less,38.3,6.5,5.8,4.1
+353,18,Secondary or less,39.1,2.6,3.8,3.3
+354,38,Secondary or less,52.2,8.1,6.0,4.5
+355,50,Secondary or less,24.5,2.1,7.4,2.8
+356,43,Secondary or less,63.3,1.8,5.1,4.6
+357,26,Postgraduate,79.4,5.3,5.0,4.2
+358,29,Bachelor,65.5,5.5,5.9,7.0
+359,74,Secondary or less,24.9,1.8,1.7,5.2
+360,53,Bachelor,17.1,3.0,6.0,4.1
+361,73,Postgraduate,71.5,4.5,2.6,8.7
+362,56,Postgraduate,62.5,7.4,6.4,6.5
+363,39,Secondary or less,51.4,6.4,6.9,3.4
+364,27,Secondary or less,30.8,6.7,3.5,6.5
+365,38,Secondary or less,50.3,5.9,1.8,5.3
+366,57,Bachelor,42.4,3.8,6.5,7.8
+367,20,Bachelor,41.1,8.3,0.9,7.6
+368,22,Secondary or less,77.0,3.2,8.3,2.9
+369,73,Bachelor,57.4,3.7,9.1,3.0
+370,53,Secondary or less,83.6,6.3,8.2,7.1
+371,43,Secondary or less,59.6,7.9,3.1,4.6
+372,49,Secondary or less,35.3,6.9,2.8,2.0
+373,73,Postgraduate,81.0,5.4,3.1,3.8
+374,54,Bachelor,62.5,3.6,3.5,3.0
+375,42,Secondary or less,52.9,4.4,4.8,3.8
+376,37,Secondary or less,32.7,3.3,6.7,2.3
+377,68,Secondary or less,68.5,4.0,7.2,4.2
+378,43,Secondary or less,60.9,2.9,7.4,3.6
+379,64,Secondary or less,40.0,4.7,4.6,7.4
+380,49,Secondary or less,56.8,5.9,5.6,4.4
+381,26,Bachelor,30.5,6.2,3.6,6.4
+382,35,Secondary or less,18.6,2.4,2.4,3.3
+383,47,Secondary or less,35.8,6.0,4.5,2.3
+384,29,Postgraduate,61.5,5.4,7.5,2.4
+385,71,Bachelor,61.5,6.4,5.6,3.7
+386,30,Bachelor,47.0,7.3,4.5,2.7
+387,76,Secondary or less,53.5,4.9,4.0,4.3
+388,77,Bachelor,45.0,4.5,4.0,4.3
+389,25,Bachelor,79.5,1.7,7.2,4.1
+390,25,Bachelor,58.9,4.8,6.7,4.9
+391,31,Secondary or less,50.0,4.1,4.3,4.2
+392,35,Secondary or less,59.6,7.3,5.1,4.9
+393,20,Bachelor,16.6,7.5,4.4,9.0
+394,52,Secondary or less,39.8,8.3,3.0,6.8
+395,76,Bachelor,39.5,3.8,3.7,6.8
+396,26,Bachelor,78.7,6.3,8.3,4.0
+397,55,Bachelor,68.5,8.4,4.6,2.7
+398,22,Bachelor,51.6,2.8,3.9,5.4
+399,59,Bachelor,44.1,4.6,6.3,3.6
+400,31,Secondary or less,49.4,4.5,4.1,5.4
+401,31,Bachelor,58.8,6.5,4.6,6.1
+402,56,Postgraduate,85.5,2.7,7.5,5.0
+403,64,Bachelor,64.4,3.0,5.1,4.8
+404,75,Secondary or less,22.6,0.8,2.7,8.8
+405,57,Bachelor,74.7,6.3,4.6,4.6
+406,59,Secondary or less,25.5,5.6,5.2,6.1
+407,54,Bachelor,65.4,4.9,4.9,5.1
+408,18,Postgraduate,37.6,2.7,5.2,3.6
+409,54,Secondary or less,52.9,7.7,5.5,4.9
+410,63,Secondary or less,66.1,5.5,2.6,5.6
+411,73,Bachelor,84.8,1.4,7.8,4.6
+412,44,Postgraduate,29.2,4.4,4.0,3.7
+413,47,Secondary or less,48.6,6.8,4.9,6.3
+414,70,Bachelor,45.0,8.0,7.0,3.9
+415,77,Bachelor,40.5,3.8,4.7,6.1
+416,79,Secondary or less,66.6,6.0,3.9,3.7
+417,51,Secondary or less,72.2,6.7,6.4,3.2
+418,32,Secondary or less,40.2,1.1,5.6,6.3
+419,74,Bachelor,32.3,6.1,4.3,6.1
+420,74,Secondary or less,43.3,3.7,2.2,7.3
+421,29,Secondary or less,72.0,0.0,6.3,6.6
+422,21,Bachelor,55.3,8.8,4.4,6.7
+423,22,Bachelor,55.3,5.6,6.1,3.8
+424,29,Secondary or less,51.4,4.0,5.0,3.9
+425,31,Bachelor,75.8,7.0,4.4,4.3
+426,48,Secondary or less,34.8,5.3,3.2,5.4
+427,34,Bachelor,73.5,5.6,4.3,3.9
+428,67,Bachelor,77.0,6.7,3.5,5.5
+429,57,Secondary or less,58.9,6.7,1.5,6.5
+430,36,Bachelor,57.5,4.3,4.4,5.8
+431,53,Secondary or less,33.4,3.2,5.3,3.3
+432,75,Secondary or less,46.2,5.1,6.8,3.7
+433,39,Bachelor,68.4,6.2,8.4,1.5
+434,65,Bachelor,46.8,1.0,5.3,9.5
+435,64,Secondary or less,71.3,4.3,6.4,5.9
+436,45,Postgraduate,51.4,4.3,2.0,5.8
+437,38,Bachelor,30.6,2.4,4.6,5.2
+438,76,Bachelor,38.9,1.5,4.1,4.1
+439,45,Bachelor,58.7,2.3,5.1,4.9
+440,60,Postgraduate,60.5,3.4,5.1,7.6
+441,63,Secondary or less,43.5,2.0,3.1,7.3
+442,47,Secondary or less,31.5,5.1,4.9,0.7
+443,47,Postgraduate,24.0,4.5,5.7,5.8
+444,19,Postgraduate,11.6,4.6,3.1,5.5
+445,22,Secondary or less,50.6,3.6,6.2,5.2
+446,35,Secondary or less,54.7,2.1,7.0,4.0
+447,21,Bachelor,71.9,7.3,4.3,8.3
+448,63,Postgraduate,30.8,6.4,8.1,3.5
+449,48,Secondary or less,37.3,5.1,3.0,3.8
+450,72,Bachelor,35.4,5.4,4.0,6.6
+451,55,Secondary or less,24.4,5.7,7.1,5.2
+452,46,Secondary or less,69.5,4.4,6.0,5.1
+453,76,Bachelor,68.7,2.7,5.3,4.5
+454,30,Bachelor,50.3,6.8,7.3,5.3
+455,75,Secondary or less,52.8,7.2,5.7,4.4
+456,78,Postgraduate,38.4,2.5,6.6,2.5
+457,68,Secondary or less,66.4,7.1,5.8,5.4
+458,55,Bachelor,56.2,4.5,4.7,5.4
+459,76,Secondary or less,42.2,4.8,6.7,4.1
+460,53,Postgraduate,42.9,6.4,6.9,3.1
+461,40,Secondary or less,41.1,5.6,4.9,2.6
+462,21,Postgraduate,77.0,1.4,7.9,5.0
+463,42,Secondary or less,55.4,3.9,2.0,5.8
+464,43,Secondary or less,70.6,4.9,7.8,5.3
+465,40,Secondary or less,70.7,8.3,3.5,5.4
+466,43,Postgraduate,41.3,3.0,7.0,4.3
+467,52,Secondary or less,41.8,4.9,3.8,6.1
+468,64,Secondary or less,61.2,4.6,4.4,4.5
+469,44,Secondary or less,58.5,1.9,4.1,5.7
+470,50,Secondary or less,39.2,5.8,3.6,7.1
+471,76,Secondary or less,56.8,4.8,3.0,5.8
+472,69,Bachelor,75.2,5.8,6.0,3.0
+473,37,Bachelor,47.9,1.7,7.8,4.3
+474,50,Secondary or less,12.7,6.5,0.0,4.9
+475,33,Secondary or less,20.2,5.9,4.2,5.8
+476,61,Bachelor,26.5,3.4,2.1,7.6
+477,55,Secondary or less,48.3,3.3,5.5,5.6
+478,45,Secondary or less,68.1,1.7,3.4,8.9
+479,23,Postgraduate,53.8,5.0,8.9,3.0
+480,34,Postgraduate,56.8,2.2,4.4,3.8
+481,70,Postgraduate,69.2,5.3,8.7,5.2
+482,74,Bachelor,64.1,5.7,6.5,5.4
+483,44,Bachelor,54.2,2.3,7.0,3.7
+484,53,Secondary or less,53.5,0.1,7.8,7.2
+485,55,Postgraduate,72.4,4.7,5.7,6.5
+486,44,Postgraduate,60.9,5.1,5.0,5.8
+487,62,Bachelor,64.3,4.7,7.5,4.7
+488,26,Secondary or less,50.9,9.2,6.3,3.7
+489,66,Bachelor,33.9,5.8,5.9,4.4
+490,49,Bachelor,51.1,5.9,7.2,7.2
+491,59,Bachelor,51.3,6.2,7.5,4.8
+492,38,Bachelor,68.1,8.4,4.7,6.6
+493,19,Secondary or less,37.8,6.2,6.2,4.4
+494,78,Postgraduate,40.5,7.9,5.3,5.7
+495,33,Secondary or less,32.8,3.8,4.6,1.3
+496,18,Bachelor,53.0,2.6,7.6,4.6
+497,39,Secondary or less,51.8,5.3,6.9,5.0
+498,70,Secondary or less,45.8,6.5,5.2,6.7
+499,21,Secondary or less,45.9,0.3,5.1,4.3
+500,30,Bachelor,39.4,3.3,3.8,3.3

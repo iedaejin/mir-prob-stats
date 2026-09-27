@@ -1,0 +1,124 @@
+---
+title: "Lab 05 — Estimation, Uncertainty and Hypothesis Testing"
+subtitle: "Sessions 11–12: Estimation and Uncertainty; Hypothesis Testing"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+You will connect random sampling to sampling distributions, confidence intervals, and hypothesis tests.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+survey <- read_csv("data/survey_attitudes.csv")
+```
+
+Treat this dataset as a teaching population.
+
+## 2. Take one random sample
+
+```{r}
+set.seed(123)
+samp <- survey |>
+  slice_sample(n = 40)
+
+mean(samp$support_international_cooperation)
+```
+
+How close is it to the population mean?
+
+```{r}
+mean(survey$support_international_cooperation)
+```
+
+## 3. Build a sampling distribution
+
+```{r}
+sample_means <- replicate(
+  1000,
+  mean(sample(
+    survey$support_international_cooperation,
+    size = 40,
+    replace = TRUE
+  ))
+)
+
+tibble(sample_mean = sample_means) |>
+  ggplot(aes(x = sample_mean)) +
+  geom_histogram(bins = 30) +
+  labs(
+    title = "Sampling distribution of the mean",
+    x = "Sample mean",
+    y = "Frequency"
+  )
+```
+
+What does this distribution represent?
+
+## 4. Confidence interval
+
+```{r}
+t.test(samp$support_international_cooperation)$conf.int
+```
+
+Interpret the interval in words.
+
+## 5. Hypothesis testing
+
+Question:
+
+> Do postgraduate respondents report different average support for international cooperation than respondents with a Bachelor degree?
+
+```{r}
+two_groups <- survey |>
+  filter(education %in% c("Bachelor", "Postgraduate"))
+
+t.test(
+  support_international_cooperation ~ education,
+  data = two_groups
+)
+```
+
+Identify:
+
+- group means;
+- estimated difference;
+- p-value;
+- confidence interval.
+
+## 6. Statistical vs substantive significance
+
+A small p-value does not automatically imply a substantively important difference.
+
+Write two separate conclusions:
+
+**Statistical conclusion:**  
+...
+
+**Substantive conclusion:**  
+...
+
+## DELIVERABLE — Inference Memo
+
+Submit an **Inference Memo** that answers one group-comparison question using the survey data.
+
+It must include:
+
+- the two group means;
+- the estimated difference;
+- a 95% confidence interval;
+- the p-value;
+- a **statistical conclusion**;
+- a **substantive conclusion**;
+- **150–220 words** total.
+
+Submit the rendered HTML.

@@ -1,0 +1,123 @@
+---
+title: "Lab 06 — Reversion to the Mean and Correlation vs Causation"
+subtitle: "Sessions 13–14: Reversion to the Mean; Correlation and Causation"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+You will see reversion to the mean in simulated data and then revisit the distinction between correlation and causation.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+world <- read_csv("data/country_indicators.csv")
+```
+
+## 2. Reversion to the mean
+
+Suppose public approval of an international organization is measured twice. Each observed score contains a stable component plus temporary noise.
+
+```{r}
+set.seed(321)
+
+n <- 500
+stable_support <- rnorm(n, mean = 50, sd = 10)
+
+sim <- tibble(
+  wave1 = stable_support + rnorm(n, 0, 8),
+  wave2 = stable_support + rnorm(n, 0, 8)
+)
+```
+
+Select respondents with unusually high values at Wave 1.
+
+```{r}
+extreme_high <- sim |>
+  filter(wave1 >= quantile(wave1, 0.90))
+
+extreme_high |>
+  summarise(
+    mean_wave1 = mean(wave1),
+    mean_wave2 = mean(wave2)
+  )
+```
+
+Why is the second mean usually less extreme?
+
+## 3. Visualize it
+
+```{r}
+ggplot(sim, aes(x = wave1, y = wave2)) +
+  geom_point(alpha = 0.4) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  labs(
+    title = "Repeated measurements and reversion to the mean",
+    x = "Wave 1",
+    y = "Wave 2"
+  )
+```
+
+## 4. Correlation and causation
+
+Now return to country data.
+
+```{r}
+m_naive <- lm(life_expectancy ~ democracy_score, data = world)
+summary(m_naive)
+```
+
+Add economic development:
+
+```{r}
+m_adjusted <- lm(
+  life_expectancy ~ democracy_score + log(gdp_per_capita),
+  data = world
+)
+summary(m_adjusted)
+```
+
+Compare the democracy coefficient across the two models.
+
+## 5. Causal diagnosis
+
+Draw or describe the causal structure you think could produce these associations.
+
+For example:
+
+\[
+GDP \rightarrow Democracy
+\]
+
+\[
+GDP \rightarrow Life\ Expectancy
+\]
+
+\[
+Democracy \rightarrow Life\ Expectancy\ ?
+\]
+
+Why can adjustment change a coefficient?
+
+## DELIVERABLE — Causal Diagnosis
+
+Submit a **Causal Diagnosis** containing:
+
+- the democracy coefficient from the naive model;
+- the democracy coefficient from the adjusted model;
+- a simple causal diagram drawn by hand and inserted as an image **or** written using arrows in the notebook;
+- **180–250 words** explaining:
+  - why the coefficient changed;
+  - what confounding means in this example;
+  - why neither regression alone proves causality;
+  - one type of evidence that would strengthen a causal claim.
+
+Submit the rendered HTML.

@@ -1,0 +1,100 @@
+---
+title: "Lab 03 — Regression for Description and Prediction"
+subtitle: "Sessions 6–7: Regression, Parts 1–2"
+format:
+  html:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+
+## Learning goals
+
+You will use simple linear regression for **description and prediction**, interpret coefficients, calculate fitted values, and examine residuals.
+
+## 1. Setup
+
+```{r}
+library(tidyverse)
+world <- read_csv("data/country_indicators.csv")
+```
+
+## 2. A regression question
+
+> Can GDP per capita predict life expectancy?
+
+```{r}
+m1 <- lm(life_expectancy ~ log(gdp_per_capita), data = world)
+summary(m1)
+```
+
+Write the fitted equation in the form
+
+\[
+\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X.
+\]
+
+What does the slope mean in substantive terms?
+
+## 3. Add the fitted line
+
+```{r}
+ggplot(world, aes(x = log(gdp_per_capita), y = life_expectancy)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Predicting life expectancy from economic development",
+    x = "Log GDP per capita",
+    y = "Life expectancy"
+  )
+```
+
+## 4. Prediction
+
+Create a prediction for a hypothetical country with GDP per capita of 20,000.
+
+```{r}
+predict(
+  m1,
+  newdata = data.frame(gdp_per_capita = 20000)
+)
+```
+
+Now predict for 5,000 and 50,000.
+
+## 5. Residuals
+
+```{r}
+world_with_fit <- world |>
+  mutate(
+    predicted = predict(m1),
+    residual = residuals(m1)
+  )
+
+world_with_fit |>
+  select(country, life_expectancy, predicted, residual) |>
+  arrange(desc(abs(residual))) |>
+  slice_head(n = 8)
+```
+
+What does a positive residual mean? What does a negative residual mean?
+
+## 6. Description is not causation
+
+Does the slope show that increasing GDP would *cause* life expectancy to increase? Explain.
+
+## DELIVERABLE — Regression Memo
+
+Submit a **Regression Memo** containing:
+
+- the research question;
+- the estimated intercept and slope;
+- one fitted regression figure;
+- a prediction for a substantively meaningful value of X;
+- one country with a large residual and an interpretation;
+- **150–220 words** explaining what the model can describe/predict and what it cannot establish causally.
+
+Render and submit the HTML.
