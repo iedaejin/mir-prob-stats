@@ -2,6 +2,14 @@
 
 Labs for **Probability and Statistics (for Policy Analysis)**, Master in International Relations (MIR), SPEGA, IE University, Term 1, SEP-2026 S-2.
 
+## R, RStudio, and Posit Cloud
+
+**R** is the language. A command asks it to calculate, summarise, or plot.
+
+**RStudio** is the program around that language: a script, a console for the result, and panes for files and plots.
+
+**[Posit Cloud](https://posit.cloud/)** is RStudio in the browser. Sign in, open a project, and work there. Nothing is installed on your computer.
+
 Each `Lab_*` folder is one Posit Cloud assignment. Upload that folder only.
 
 ## What is in a lab folder
