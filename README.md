@@ -1,54 +1,42 @@
-# Probability and Statistics — MIR Labs (Fall 2026)
+# Probability and Statistics — MIR Labs
 
-These labs are designed for a Master in International Relations course and follow the syllabus session order.
+Labs for **Probability and Statistics (for Policy Analysis)**, Master in International Relations (MIR), SPEGA, IE University, Term 1, SEP-2026 S-2.
 
-## Posit Cloud workflow
-1. Create one Posit Cloud assignment per lab folder.
-2. Upload the folder contents to a new RStudio project.
-3. Students open `tutorial.Rmd` and click **Run Document** (needs the `learnr` and `tidyverse` packages).
-4. They answer the questions, type their name, and download the `.txt`.
-5. They upload that text file. It contains their name, the date, and each answer.
+Each `Lab_*` folder is one Posit Cloud assignment. Upload that folder only.
 
-The longer `lab.qmd` notebooks stay in each folder as optional guided analysis. The file to submit is the `.txt` from the tutorial.
+## What is in a lab folder
+
+| File | Use |
+|---|---|
+| `tutorial.Rmd` | Open it and click **Run Document**. Answer the questions, type your name, and download the `.txt`. That file is the submission. |
+| `lab.qmd` | Optional longer notebook. Render it to HTML to read the analysis. Do not submit it. |
+| `lab_submission.R` | Leave it in the folder. The tutorial loads it. Do not run it yourself. |
+| `data/` | The dataset for these sessions, plus `SOURCE.txt`. |
 
 ```r
 install.packages(c("learnr", "tidyverse"))
 rmarkdown::run("tutorial.Rmd")
 ```
 
-## Packages
-All labs use only:
-- `tidyverse`
+Inference and regression use base R (`lm`, `t.test`, `confint`, `predict`).
 
-The statistical functions used for inference/regression are from base R (`lm`, `t.test`, `confint`, `predict`).
+## Labs
 
-## Data
+Sessions 8, 15, and 21–22 are exams and have no folder.
 
-Each lab uses the real dataset named for its sessions in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). The files are copied unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss), the supplementary materials for Kosuke Imai and Nora Webb Williams, *Quantitative Social Science: An Introduction in tidyverse* (Princeton University Press).
+| Folder | Sessions | Practice | Data |
+|---|---|---|---|
+| `Lab_00_Welcome_to_R` | 1 | Import, inspect rows, summarise, one plot | `UNpop.csv` |
+| `Lab_01_Causal_Questions_and_Description` | 2–3 | A causal question versus a description | `resume.csv` |
+| `Lab_02_Correlation` | 4–5 | A scatter plot and a correlation | `congress.csv` |
+| `Lab_03_Regression` | 6–7 | One least-squares line as description and prediction | `face.csv` |
+| `Lab_04_Probability` | 9–10 | A long-run share, and one conditional probability | `FLVoters.csv` |
+| `Lab_05_Inference` | 11–12 | A mean, an interval, and a p-value | `STAR.csv` |
+| `Lab_06_Reversion_and_Causation` | 13–14 | Reversion to the mean across two elections | `pres08.csv`, `pres12.csv` |
+| `Lab_07_Randomized_Experiments` | 16–17 | A difference in means as an effect of assignment | `social.csv` |
+| `Lab_08_Confounding` | 18–19 | The same coefficient before and after covariates | `social.csv` |
+| `Lab_09_Mechanisms` | 20 | The effect is not the same size in every subgroup | `social.csv` |
 
-Copyright in those files remains with the authors. They are included under the [GNU General Public License, version 2](https://github.com/kosukeimai/qss/blob/master/LICENSE); see `LICENSE`. A `data/SOURCE.txt` in each lab repeats that notice so a folder uploaded to Posit Cloud still carries it. The lab text and tutorials are course material for this MIR course. They are not a work of the QSS authors.
+The files are the datasets named for those sessions in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS), copied unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) (Imai and Webb Williams, *Quantitative Social Science*, Princeton University Press). Copyright in the data remains with the authors, under [GPL-2.0](https://github.com/kosukeimai/qss/blob/master/LICENSE). See `LICENSE` and each lab's `data/SOURCE.txt`. The lab text is course material. It is not a work of the QSS authors.
 
-| Lab | File | QSS |
-|---|---|---|
-| 00 | `UNpop.csv` | Ch. 1 |
-| 01 | `resume.csv` | 2.1–2.3 |
-| 02 | `congress.csv` | 3.6–3.7 |
-| 03 | `face.csv` | 4.2 |
-| 04 | `FLVoters.csv` | 6.2 |
-| 05 | `STAR.csv` | 7.1 |
-| 06 | `pres08.csv`, `pres12.csv` | 4.2.4 |
-| 07–09 | `social.csv` | 2.4, 4.4.1, 4.4.2 |
-
-Copies also sit in `shared_data/`.
-
-## Lab sequence
-- Lab 00 — Welcome to R (Session 1)
-- Lab 01 — Causal Questions & Describing Data (Sessions 2–3)
-- Lab 02 — Correlation (Sessions 4–5)
-- Lab 03 — Regression for Description & Prediction (Sessions 6–7)
-- Lab 04 — Probability Through Simulation (Sessions 9–10)
-- Lab 05 — Estimation, Uncertainty & Hypothesis Testing (Sessions 11–12)
-- Lab 06 — Reversion to the Mean & Correlation vs Causation (Sessions 13–14)
-- Lab 07 — Randomized Experiments (Sessions 16–17)
-- Lab 08 — Controlling for Confounders (Sessions 18–19)
-- Lab 09 — Mechanisms (Session 20)
+`shared_data/` and `R/` are copies for the repository. A Posit assignment does not need them.
