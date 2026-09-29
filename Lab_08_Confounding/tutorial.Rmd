@@ -9,65 +9,77 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-aid <- read_csv("data/aid_observational.csv", show_col_types = FALSE)
+social <- read_csv("data/social.csv", show_col_types = FALSE) %>%
+  mutate(messages = factor(
+    messages,
+    levels = c("Control", "Civic Duty", "Hawthorne", "Neighbors")
+  ))
 lab_meta <- list(id = "lab08", title = "Controlling for confounders")
 lab_prompts <- c(
-  q1 = "In this teaching file, the naive aid coefficient is…",
-  q2 = "After adding need, conflict, and institutions, the aid coefficient…",
+  q1 = "With Control as the reference, the Neighbors coefficient is…",
+  q2 = "After adding year of birth, household size, and 2004 turnout, the Neighbors coefficient…",
   q3 = "A confounder is…",
-  q4 = "Why is \"we controlled for everything\" not a causal proof?"
+  q4 = "Why is "we controlled for everything" not a causal proof?"
 )
 ```
 
 ## What you will do
 
-Compare a naive association with an adjusted one. Adjustment is not a design. Download the `.txt`.
+Compare one treatment coefficient before and after covariates. Adjustment is not a design. Download the `.txt`.
 
 ```{r coefs, exercise=TRUE, exercise.lines=8}
-m1 <- lm(economic_growth_pct ~ aid_per_capita, data = aid)
-m2 <- lm(
-  economic_growth_pct ~ aid_per_capita +
-    baseline_need + conflict_intensity + institutional_quality,
-  data = aid
-)
-c(naive = coef(m1)[["aid_per_capita"]], adjusted = coef(m2)[["aid_per_capita"]])
+m1 <- lm(primary2006 ~ messages, data = social)
+m2 <- lm(primary2006 ~ messages + yearofbirth + hhsize + primary2004, data = social)
+coef(m1)["messagesNeighbors"]
+coef(m2)["messagesNeighbors"]
 ```
 
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("Negative (about -0.02).", correct = TRUE),
-  answer("Positive (about +0.04)."),
-  answer("Exactly zero."),
-  allow_retry = TRUE
+  answer("About 0.08. Assigned the Neighbors mailing, turnout is about 8 points higher than Control.", correct = TRUE),
+  answer("About 0.80. The mailing multiplies turnout by four."),
+  answer("Zero, because the model includes an intercept."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("Changes sign and becomes positive (about +0.04).", correct = TRUE),
-  answer("Stays negative and identical."),
-  allow_retry = TRUE
+  answer("Stays about 0.08. Random assignment already balanced these covariates.", correct = TRUE),
+  answer("Flips sign, which shows the experiment was confounded."),
+  answer("Becomes 1, a perfect effect."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("A common cause of treatment and outcome that can distort a raw comparison.", correct = TRUE),
+  answer("A variable that influences both the assignment and the outcome.", correct = TRUE),
   answer("Any variable you can add to a regression."),
-  answer("The residual."),
+  answer("The outcome measured before treatment, always."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
 ```
 
 ```{r q4}
-question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "Unmeasured confounders, and controls that sit after the treatment.",
+  trim = TRUE
+)
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -83,9 +95,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

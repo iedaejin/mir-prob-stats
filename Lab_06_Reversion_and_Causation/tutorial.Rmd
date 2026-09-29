@@ -9,37 +9,35 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-set.seed(6)
-n <- 400
-stable <- rnorm(n, 50, 10)
-sim <- tibble(
-  wave1 = stable + rnorm(n, 0, 8),
-  wave2 = stable + rnorm(n, 0, 8)
-)
+pres <- inner_join(
+  read_csv("data/pres08.csv", show_col_types = FALSE) %>% select(state, Obama08 = Obama),
+  read_csv("data/pres12.csv", show_col_types = FALSE) %>% select(state, Obama12 = Obama),
+  by = "state"
+) %>%
+  mutate(z08 = as.numeric(scale(Obama08)), z12 = as.numeric(scale(Obama12)))
 lab_meta <- list(id = "lab06", title = "Reversion to the mean")
 lab_prompts <- c(
-  q1 = "If you keep only the top 10% on wave 1, their wave-2 mean usually…",
-  q2 = "That drop happens even when…",
-  q3 = "A cross-section of countries is enough to show reversion to the mean.",
+  q1 = "States in the bottom quarter of Obama's 2008 share are, in 2012,…",
+  q2 = "That small move toward the middle happens even when…",
+  q3 = "A single cross-section of countries is enough to show reversion to the mean.",
   q4 = "A ministry credits a program because the worst districts improved next year. What is the rival story?"
 )
 ```
 
 ## What you will do
 
-See reversion without a treatment, and keep it separate from a causal claim. Download the `.txt`.
+See reversion in the 2008 and 2012 state results, and keep it separate from a causal claim. Download the `.txt`.
 
-```{r extremes, exercise=TRUE, exercise.lines=6}
-hi <- sim |> filter(wave1 >= quantile(wave1, 0.90))
-hi |> summarise(mean_wave1 = mean(wave1), mean_wave2 = mean(wave2))
+```{r slope, exercise=TRUE, exercise.lines=2}
+coef(lm(z12 ~ z08, data = pres))
 ```
 
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("Moves closer to the middle.", correct = TRUE),
-  answer("Stays just as extreme, if there is no program."),
-  answer("Falls only if a program failed."),
+  answer("On average a bit less extreme. The standardized slope is about 0.98, below 1.", correct = TRUE),
+  answer("Much more extreme, because a low share causes the next low share."),
+  answer("Exactly the same z-score, because the correlation is perfect."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -48,9 +46,10 @@ question(
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("There is no treatment. Part of the extreme score was noise.", correct = TRUE),
-  answer("The analyst includes a lagged dependent variable."),
-  allow_retry = TRUE
+  answer("No program treated those states between the two elections.", correct = TRUE),
+  answer("The states with low shares received a proven intervention."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
@@ -58,16 +57,24 @@ question(
 question(
   lab_prompts[["q3"]],
   answer("False. Reversion needs the same units measured twice.", correct = TRUE),
-  answer("True. One year of GDP is two waves."),
+  answer("True. One year of countries is enough."),
   allow_retry = TRUE
 )
 ```
 
 ```{r q4}
-question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "Noise in the first measurement, not a treatment effect.",
+  trim = TRUE
+)
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -83,9 +90,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

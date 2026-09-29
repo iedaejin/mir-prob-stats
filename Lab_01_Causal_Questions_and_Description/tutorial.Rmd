@@ -9,53 +9,54 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
+resume <- read_csv("data/resume.csv", show_col_types = FALSE)
 lab_meta <- list(id = "lab01", title = "Causal questions and description")
 lab_prompts <- c(
   q1 = "Which question is a causal question?",
-  q2 = "Life expectancy: is the mean far from the median?",
-  q3 = "A group comparison of life expectancy by recent conflict is…",
-  q4 = "Rewrite this claim as an effect question: \"Conflict hurts development.\""
+  q2 = "The callback gap (White-sounding names minus Black-sounding names) is about…",
+  q3 = "The mean of call equals…",
+  q4 = "Why can we not read the effect for one particular résumé off this file?"
 )
 ```
 
 ## What you will do
 
-Rows are labeled Country 01, Country 02, and so on. They are fictional, not real states. Separate a description from an effect question, then summarise one variable. Download the `.txt` and upload it.
+Separate a description from an effect question, then summarise the callback indicator. Download the `.txt` and upload it.
+
+```{r means, exercise=TRUE, exercise.lines=6}
+resume %>%
+  group_by(race) %>%
+  summarise(callback = mean(call), n = n(), .groups = "drop")
+```
 
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("What is the effect of a peacekeeping mission on civilian deaths?", correct = TRUE),
-  answer("What is the mean life expectancy in this file?"),
-  answer("Which region has the highest median GDP?"),
+  answer("What is the effect of a Black-sounding name on the callback rate?", correct = TRUE),
+  answer("What is the callback rate in this file?"),
+  answer("How many résumés are in the file?"),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
 ```
 
-```{r center, exercise=TRUE, exercise.lines=6}
-world |>
-  summarise(
-    mean_le = mean(life_expectancy),
-    median_le = median(life_expectancy)
-  )
-```
-
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("No. They are almost the same (about 71 years).", correct = TRUE),
-  answer("Yes. The mean is many years above the median."),
-  allow_retry = TRUE
+  answer("3 percentage points (about 9.6 percent versus 6.4 percent).", correct = TRUE),
+  answer("30 percentage points."),
+  answer("Zero. The résumés were identical, so the rates match."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("A description of two groups, not yet a causal effect.", correct = TRUE),
-  answer("An average treatment effect, because the variable is coded 0/1."),
+  answer("The callback rate, because call is 0 or 1.", correct = TRUE),
+  answer("The median name."),
+  answer("The causal effect for every résumé."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -65,12 +66,15 @@ question(
 question_text(
   lab_prompts[["q4"]],
   open_answer(),
-  placeholder = "Effect of ___ on ___ for which units?",
+  placeholder = "One résumé, one name, and the missing counterfactual.",
   trim = TRUE
 )
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -86,9 +90,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

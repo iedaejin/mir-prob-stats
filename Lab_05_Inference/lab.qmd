@@ -10,115 +10,41 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will connect random sampling to sampling distributions, confidence intervals, and hypothesis tests.
+You will read a difference in means, a confidence interval, and a p-value. The file is the STAR class-size experiment used in QSS 7.1. `classtype` 1, 2, and 3 are small class, regular class, and regular class with an aide. The outcome here is the fourth-grade reading score, `g4reading`.
 
 ## 1. Setup
 
 ```{r}
 library(tidyverse)
-survey <- read_csv("data/survey_attitudes.csv")
-```
-
-Treat this dataset as a teaching population.
-
-## 2. Take one random sample
-
-```{r}
-set.seed(123)
-samp <- survey |>
-  slice_sample(n = 40)
-
-mean(samp$support_international_cooperation)
-```
-
-How close is it to the population mean?
-
-```{r}
-mean(survey$support_international_cooperation)
-```
-
-## 3. Build a sampling distribution
-
-```{r}
-sample_means <- replicate(
-  1000,
-  mean(sample(
-    survey$support_international_cooperation,
-    size = 40,
-    replace = TRUE
-  ))
-)
-
-tibble(sample_mean = sample_means) |>
-  ggplot(aes(x = sample_mean)) +
-  geom_histogram(bins = 30) +
-  labs(
-    title = "Sampling distribution of the mean",
-    x = "Sample mean",
-    y = "Frequency"
+star <- read_csv("data/STAR.csv") %>%
+  mutate(classtype = factor(
+    classtype,
+    labels = c("Small class", "Regular class", "Regular class with aide")
+  )) %>%
+  filter(
+    !is.na(g4reading),
+    classtype %in% c("Small class", "Regular class")
   )
 ```
 
-What does this distribution represent?
-
-## 4. Confidence interval
-
 ```{r}
-t.test(samp$support_international_cooperation)$conf.int
+star %>%
+  group_by(classtype) %>%
+  summarise(mean_reading = mean(g4reading), n = n(), .groups = "drop")
 ```
 
-Interpret the interval in words.
-
-## 5. Hypothesis testing
-
-Question:
-
-> Do postgraduate respondents report different average support for international cooperation than respondents with a Bachelor degree?
-
 ```{r}
-two_groups <- survey |>
-  filter(education %in% c("Bachelor", "Postgraduate"))
-
-t.test(
-  support_international_cooperation ~ education,
-  data = two_groups
-)
+t.test(g4reading ~ classtype, data = star)
 ```
 
-Identify:
+The small-class mean is about 723. The regular-class mean is about 720. The difference is a few points. The 95 percent interval runs from about −1.7 to 8.7 and includes zero. The two-sided p-value is about 0.19.
 
-- group means;
-- estimated difference;
-- p-value;
-- confidence interval.
+A 95 percent interval is a procedure: in repeated samples, 95 percent of such intervals would cover the true difference. It is not a 95 percent probability that this particular interval contains the truth. A p-value is the probability of a gap at least this large if the two class types had the same mean. Failing to reject is not proof that class size does not matter. The estimate is small and imprecise.
 
-## 6. Statistical vs substantive significance
+Random assignment is what makes this comparison a candidate for an effect of class type. The interval does not create that design.
 
-A small p-value does not automatically imply a substantively important difference.
+## Source
 
-Write two separate conclusions:
-
-**Statistical conclusion:**  
-...
-
-**Substantive conclusion:**  
-...
-
-## DELIVERABLE — Inference Memo
-
-Submit an **Inference Memo** that answers one group-comparison question using the survey data.
-
-It must include:
-
-- the two group means;
-- the estimated difference;
-- a 95% confidence interval;
-- the p-value;
-- a **statistical conclusion**;
-- a **substantive conclusion**;
-- **150–220 words** total.
-
-Submit the rendered HTML.
+`STAR.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `UNCERTAINTY/STAR.csv`. Sessions 11–12 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

@@ -1,0 +1,5 @@
+Source: Kosuke Imai and Nora Webb Williams, Quantitative Social Science (Princeton University Press).
+This file is unchanged from https://github.com/kosukeimai/qss
+License: GNU General Public License, version 2 (https://github.com/kosukeimai/qss/blob/master/LICENSE).
+It is the dataset linked for this lab's sessions in https://github.com/iedaejin/mir-prob-stats-QQS
+The lab text is course material for Probability and Statistics (for Policy Analysis), MIR, IE University. It is not a work of the QSS authors.

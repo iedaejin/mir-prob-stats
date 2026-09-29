@@ -10,101 +10,37 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will investigate association between two variables using scatterplots and correlation, and practice separating **association** from **causal interpretation**.
+You will plot two variables and read a correlation as association. The file is the congressional roll-call data in QSS 3.6. `dwnom1` and `dwnom2` are two DW-NOMINATE scores for a member of Congress. They are measures of voting patterns, not a treatment and its outcome.
 
 ## 1. Setup
 
 ```{r}
 library(tidyverse)
-world <- read_csv("data/country_indicators.csv")
+congress <- read_csv("data/congress.csv")
+congress112 <- congress %>%
+  filter(congress == 112, party %in% c("Democrat", "Republican"))
 ```
 
-## 2. Visual association
-
-Question:
-
-> Are richer countries more democratic?
+## 2. The scatter and the correlation
 
 ```{r}
-ggplot(world, aes(x = gdp_per_capita, y = democracy_score)) +
-  geom_point() +
+ggplot(congress112, aes(x = dwnom1, y = dwnom2, color = party)) +
+  geom_point(alpha = 0.7) +
   labs(
-    title = "GDP per capita and democracy",
-    x = "GDP per capita",
-    y = "Democracy score"
+    x = "DW-NOMINATE dimension 1",
+    y = "DW-NOMINATE dimension 2",
+    title = "112th Congress"
   )
 ```
 
-GDP per capita is strongly right-skewed. Try the log scale:
-
 ```{r}
-ggplot(world, aes(x = log(gdp_per_capita), y = democracy_score)) +
-  geom_point() +
-  labs(
-    title = "Economic development and democracy",
-    x = "Log GDP per capita",
-    y = "Democracy score"
-  )
+cor(congress112$dwnom1, congress112$dwnom2)
 ```
 
-Which plot is easier to interpret?
+The correlation is about 0.12. In this Congress the two scores move together only weakly. A positive correlation says that higher values on one score tend to come with higher values on the other. It does not say that one score causes the other, and it does not say that a party caused a member's voting record.
 
-## 3. Correlation coefficient
+## Source
 
-```{r}
-cor(log(world$gdp_per_capita), world$democracy_score)
-```
-
-Interpret the **sign** and approximate **strength** of the association.
-
-## 4. Correlation is not a causal effect
-
-Complete the sentence:
-
-> A positive correlation between GDP and democracy does not by itself show that increasing GDP would cause democracy to increase because ...
-
-Give at least two possible explanations.
-
-## 5. Explore another relationship
-
-Choose one pair:
-
-- democracy and life expectancy;
-- democracy and military spending;
-- trade openness and GDP;
-- UN voting alignment and democracy.
-
-Create a scatterplot and calculate the correlation.
-
-```{r}
-# Your code here
-```
-
-## 6. Spot the outliers
-
-Use the plot to identify observations that do not follow the overall pattern.
-
-```{r}
-world |>
-  select(country, gdp_per_capita, democracy_score) |>
-  arrange(desc(gdp_per_capita))
-```
-
-Do unusual cases weaken, strengthen, or complicate your substantive argument?
-
-## DELIVERABLE — Association Brief
-
-Produce a **150–220 word Association Brief** answering one international-relations question.
-
-Include:
-
-- one labelled scatterplot;
-- the correlation coefficient;
-- a plain-language interpretation of direction and strength;
-- one observation about an unusual country/case;
-- a final paragraph headed **“Causal interpretation”** explaining why the result does or does not support a causal claim.
-
-Submit the rendered HTML.
+`congress.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `MEASUREMENT/congress.csv`. Sessions 4–5 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

@@ -9,20 +9,25 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
-fit <- lm(life_expectancy ~ gdp_per_capita, data = world)
+face <- read_csv("data/face.csv", show_col_types = FALSE) %>%
+  mutate(
+    d.share = d.votes / (d.votes + r.votes),
+    r.share = r.votes / (d.votes + r.votes),
+    diff.share = d.share - r.share
+  )
+fit <- lm(diff.share ~ d.comp, data = face)
 lab_meta <- list(id = "lab03", title = "Regression for description and prediction")
 lab_prompts <- c(
-  q1 = "The slope of life expectancy on GDP per capita is an association of about…",
+  q1 = "The slope of the Democratic vote margin on the competence rating is about…",
   q2 = "A fitted value is…",
   q3 = "Which use of the line is honest?",
-  q4 = "Why is a prediction at a GDP far outside this sample risky?"
+  q4 = "Why is a prediction at a competence score far outside this sample risky?"
 )
 ```
 
 ## What you will do
 
-Rows are labeled Country 01, Country 02, and so on. They are fictional, not real states. Read one OLS slope as description, not as an effect of a policy. Then download the `.txt`.
+Read one OLS slope as description, not as an effect of changing a candidate's face. Then download the `.txt`.
 
 ```{r coef-ex, exercise=TRUE, exercise.lines=2}
 coef(fit)
@@ -31,9 +36,9 @@ coef(fit)
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("0.00018 years per extra dollar of GDP per capita (about 1.8 years per $10,000).", correct = TRUE),
-  answer("71 years, regardless of GDP."),
-  answer("r = 1, a perfect causal effect."),
+  answer("0.66. A one-point higher competence rating goes with a vote margin about 0.66 higher.", correct = TRUE),
+  answer("71. The line ignores the rating."),
+  answer("1. The rating determines the vote."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -42,8 +47,8 @@ question(
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("The life expectancy the line predicts at a country's GDP.", correct = TRUE),
-  answer("The causal effect for that country."),
+  answer("The vote margin the line predicts at a given competence rating.", correct = TRUE),
+  answer("The causal effect for that candidate."),
   answer("The residual."),
   allow_retry = TRUE,
   random_answer_order = TRUE
@@ -53,8 +58,8 @@ question(
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("\"In this sample, higher GDP is associated with higher fitted life expectancy.\"", correct = TRUE),
-  answer("\"The regression proves that raising GDP increases life expectancy.\""),
+  answer("In this sample, higher competence ratings go with a higher Democratic vote margin.", correct = TRUE),
+  answer("The regression proves that changing a face would change the vote."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -64,11 +69,15 @@ question(
 question_text(
   lab_prompts[["q4"]],
   open_answer(),
+  placeholder = "The line was fit inside the observed ratings.",
   trim = TRUE
 )
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -84,9 +93,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

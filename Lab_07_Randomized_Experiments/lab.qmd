@@ -10,99 +10,25 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will analyze a randomized experiment, check treatment balance, estimate a treatment effect, and explain why randomization supports causal inference.
+You will read a difference in means as an effect of assignment. The file is the social-pressure turnout experiment in QSS 2.4 (Gerber, Green, and Larimer). Households were randomly assigned to a mailing. `messages` is the mailing. `primary2006` is 1 if someone in the household voted in the 2006 primary. The comparison below is the Neighbors mailing against Control.
 
 ## 1. Setup
 
 ```{r}
 library(tidyverse)
-exp <- read_csv("data/diplomacy_experiment.csv")
+social <- read_csv("data/social.csv")
+social %>%
+  filter(messages %in% c("Control", "Neighbors")) %>%
+  group_by(messages) %>%
+  summarise(turnout = mean(primary2006), n = n(), .groups = "drop")
 ```
 
-The data are synthetic. Participants were randomly assigned to either:
+Control turnout is about 29.7 percent. The Neighbors mailing is about 37.8 percent. The difference is about 8.1 percentage points.
 
-- `treatment_message = 1`: a diplomatic-cooperation message;
-- `treatment_message = 0`: a control message.
+What was randomized is the mailing, not the vote. Under random assignment, that difference estimates the average effect of being assigned the Neighbors mailing in this experiment. It does not, by itself, say that the same mailing would do the same thing in another election, or which feeling inside the household produced the vote.
 
-Outcome: support for diplomatic cooperation after treatment.
+## Source
 
-## 2. Check treatment allocation
-
-```{r}
-exp |>
-  count(treatment_message)
-```
-
-## 3. Check balance
-
-Randomization should make pretreatment variables similar *on average*.
-
-```{r}
-exp |>
-  group_by(treatment_message) |>
-  summarise(
-    mean_age = mean(age),
-    mean_prior_support = mean(prior_support),
-    n = n()
-  )
-```
-
-Are the groups exactly identical? Do they need to be?
-
-## 4. Difference in means
-
-```{r}
-exp |>
-  group_by(treatment_message) |>
-  summarise(
-    mean_post_support = mean(post_support_diplomatic_cooperation),
-    n = n()
-  )
-```
-
-Calculate the difference manually.
-
-## 5. Regression estimate
-
-```{r}
-m_exp <- lm(
-  post_support_diplomatic_cooperation ~ treatment_message,
-  data = exp
-)
-
-summary(m_exp)
-confint(m_exp)
-```
-
-How does the treatment coefficient relate to the difference in means?
-
-## 6. Optional precision adjustment
-
-```{r}
-m_exp_adj <- lm(
-  post_support_diplomatic_cooperation ~ treatment_message + prior_support,
-  data = exp
-)
-
-summary(m_exp_adj)
-```
-
-Why is `prior_support` not needed to *create* causal identification under random assignment?
-
-## DELIVERABLE — Experimental Results Brief
-
-Write a **200–250 word brief** for a policymaker.
-
-Include:
-
-- treatment and control means;
-- estimated average treatment effect;
-- 95% confidence interval;
-- a one-sentence statistical conclusion;
-- a one-sentence substantive conclusion;
-- a paragraph answering: **Why is the causal interpretation stronger here than in an observational correlation?**
-
-Submit the rendered HTML.
+`social.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `CAUSALITY/social.csv`. Session 16 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

@@ -1,6 +1,6 @@
 ---
 title: "Lab 09 — Mechanisms"
-subtitle: "Session 20: Assessing Mechanisms"
+subtitle: "Session 20: Mechanisms"
 format:
   html:
     toc: true
@@ -10,94 +10,27 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will distinguish a treatment effect from a proposed causal mechanism and use regressions to examine evidence consistent with a mechanism.
+You will see a treatment effect that is not the same size in every subgroup. The file is the social-pressure experiment again, the heterogeneous-effects section of QSS 4.4.2. The moderator is `primary2004`: did the household vote in the 2004 primary? The outcome is `primary2006`. The contrast is Neighbors against Control.
 
-## 1. Setup
+A larger effect in one subgroup is a clue about where the mailing matters. It is not yet the mechanism. The subgroup was not a second experiment you designed to isolate social pressure from every other difference between 2004 voters and everyone else.
+
+## 1. Two effects
 
 ```{r}
 library(tidyverse)
-mech <- read_csv("data/mechanism_diplomatic_contact.csv")
+social <- read_csv("data/social.csv") %>%
+  filter(messages %in% c("Control", "Neighbors"))
+social %>%
+  group_by(primary2004, messages) %>%
+  summarise(turnout = mean(primary2006), n = n(), .groups = "drop")
 ```
 
-The synthetic study asks whether diplomatic contact increases public support for cooperation.
+Among households that voted in 2004, turnout is about 48.2 percent under Neighbors and 38.6 percent under Control. The gap is about 9.6 points. Among households that did not vote in 2004, the rates are about 30.6 and 23.7 percent. The gap is about 6.9 points.
 
-Proposed mechanism:
+The Neighbors mailing is associated with a larger increase where people had voted before. That is an interaction: the effect of the mailing changes with the moderator. It does not name the psychological step that produced the extra votes, and a search across many subgroups will eventually find a gap by chance.
 
-\[
-Diplomatic\ Contact \rightarrow Trust \rightarrow Support\ for\ Cooperation
-\]
+## Source
 
-## 2. Total association between treatment and outcome
-
-```{r}
-m_total <- lm(
-  support_for_cooperation ~ diplomatic_contact,
-  data = mech
-)
-
-summary(m_total)
-```
-
-## 3. Does treatment affect the proposed mechanism?
-
-```{r}
-m_mech <- lm(
-  trust_in_foreign_partner ~ diplomatic_contact,
-  data = mech
-)
-
-summary(m_mech)
-```
-
-What would we expect if trust is part of the mechanism?
-
-## 4. Is the mechanism associated with the outcome?
-
-```{r}
-m_out <- lm(
-  support_for_cooperation ~ trust_in_foreign_partner,
-  data = mech
-)
-
-summary(m_out)
-```
-
-## 5. Add both variables
-
-```{r}
-m_both <- lm(
-  support_for_cooperation ~ diplomatic_contact +
-    trust_in_foreign_partner,
-  data = mech
-)
-
-summary(m_both)
-```
-
-Compare the diplomatic-contact coefficient in `m_total` and `m_both`.
-
-## 6. Important caution
-
-A smaller treatment coefficient after including the mediator is **not, by itself, proof of mediation**.
-
-Discuss at least one reason why causal mechanism claims require stronger assumptions or design.
-
-## DELIVERABLE — Mechanism Brief
-
-Submit a **Causal Mechanism Brief** with:
-
-- the proposed mechanism written as an arrow diagram;
-- the treatment → outcome coefficient;
-- the treatment → trust coefficient;
-- the trust → outcome association;
-- **200–280 words** answering:
-  - Is the observed evidence consistent with the proposed mechanism?
-  - What evidence is still missing?
-  - What additional design or data would make the mechanism claim more convincing?
-
-End with one sentence that clearly distinguishes **evidence of an effect** from **evidence about how the effect occurs**.
-
-Submit the rendered HTML.
+`social.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `CAUSALITY/social.csv`. Session 20 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

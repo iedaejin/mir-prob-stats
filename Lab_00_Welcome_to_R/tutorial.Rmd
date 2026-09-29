@@ -9,30 +9,31 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
+un <- read_csv("data/UNpop.csv", show_col_types = FALSE) %>%
+  mutate(pop_millions = world.pop / 1000)
 lab_meta <- list(id = "lab00", title = "Welcome to R")
 lab_prompts <- c(
   q1 = "What does one row of this dataset represent?",
-  q2 = "How many countries are in the file?",
-  q3 = "For GDP per capita, which statement is true?",
-  q4 = "In one or two sentences, describe the life-expectancy distribution without using a causal verb."
+  q2 = "How many rows are in the file?",
+  q3 = "Which statement fits the series?",
+  q4 = "In one or two sentences, describe the series without using a causal verb."
 )
 ```
 
 ## What you will do
 
-Rows are labeled Country 01, Country 02, and so on. They are fictional, not real states. Load the teaching country file, name the unit of analysis, and read a simple summary. At the end, download a `.txt` with your name, the date, and your answers, and upload that file.
+Load the UN population file from QSS Chapter 1, name the unit of analysis, and read a simple summary. At the end, download a `.txt` and upload it.
 
 ```{r peek, exercise=TRUE, exercise.lines=4}
-glimpse(world)
-nrow(world)
+glimpse(un)
+nrow(un)
 ```
 
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("One country", correct = TRUE),
-  answer("One year of world population"),
+  answer("One year of world population", correct = TRUE),
+  answer("One country"),
   answer("One variable"),
   allow_retry = TRUE,
   random_answer_order = TRUE
@@ -42,27 +43,27 @@ question(
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("50", correct = TRUE),
-  answer("22"),
-  answer("500"),
+  answer("7", correct = TRUE),
+  answer("50"),
+  answer("1950"),
   allow_retry = TRUE
 )
 ```
 
-```{r gdp-summary, exercise=TRUE, exercise.lines=5}
-world |>
+```{r gdp-summary, exercise=TRUE, exercise.lines=6}
+un %>%
   summarise(
-    mean_gdp = mean(gdp_per_capita),
-    median_gdp = median(gdp_per_capita)
+    mean_millions = mean(pop_millions),
+    median_millions = median(pop_millions)
   )
 ```
 
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("The mean is well above the median: the distribution is right-skewed.", correct = TRUE),
-  answer("The mean and the median are the same, so GDP is symmetric."),
-  answer("The median is larger, so most countries are very rich."),
+  answer("Population is higher in each later decade. The mean sits a little above the median.", correct = TRUE),
+  answer("Population falls after 1980."),
+  answer("The file is a cross-section of countries in one year."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -72,10 +73,11 @@ question(
 question_text(
   lab_prompts[["q4"]],
   open_answer(),
-  placeholder = "Shape, center, and whether mean or median is more informative.",
+  placeholder = "What rises, over which years, and in what units?",
   trim = TRUE
 )
 ```
+
 
 ## Submit
 
@@ -95,9 +97,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

@@ -10,91 +10,41 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will use simple linear regression for **description and prediction**, interpret coefficients, calculate fitted values, and examine residuals.
+You will fit one line, read the slope as an association, and separate a fitted value from an effect. The file is the candidate-face study in QSS 4.2. Subjects rated how competent unfamiliar candidates looked. `d.comp` is the Democrat's competence rating. The Democratic margin in the vote is built from the vote counts.
+
+A face rating that predicts vote share is not a policy lever.
 
 ## 1. Setup
 
 ```{r}
 library(tidyverse)
-world <- read_csv("data/country_indicators.csv")
+face <- read_csv("data/face.csv") %>%
+  mutate(
+    d.share = d.votes / (d.votes + r.votes),
+    r.share = r.votes / (d.votes + r.votes),
+    diff.share = d.share - r.share
+  )
+fit <- lm(diff.share ~ d.comp, data = face)
+coef(fit)
 ```
 
-## 2. A regression question
-
-> Can GDP per capita predict life expectancy?
+The slope is about 0.66. In this sample, a one-point higher Democratic competence rating goes with about a 0.66 higher Democratic margin in vote share. The correlation is about 0.43. That is in-sample association.
 
 ```{r}
-m1 <- lm(life_expectancy ~ log(gdp_per_capita), data = world)
-summary(m1)
-```
-
-Write the fitted equation in the form
-
-\[
-\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X.
-\]
-
-What does the slope mean in substantive terms?
-
-## 3. Add the fitted line
-
-```{r}
-ggplot(world, aes(x = log(gdp_per_capita), y = life_expectancy)) +
+ggplot(face, aes(x = d.comp, y = diff.share)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   labs(
-    title = "Predicting life expectancy from economic development",
-    x = "Log GDP per capita",
-    y = "Life expectancy"
+    x = "Democratic competence rating",
+    y = "Democratic margin in vote share",
+    title = "Faces and vote share"
   )
 ```
 
-## 4. Prediction
+The line is a summary of these candidates. A fitted value is the margin the line predicts at a rating. It is not the effect of changing a candidate's face.
 
-Create a prediction for a hypothetical country with GDP per capita of 20,000.
+## Source
 
-```{r}
-predict(
-  m1,
-  newdata = data.frame(gdp_per_capita = 20000)
-)
-```
-
-Now predict for 5,000 and 50,000.
-
-## 5. Residuals
-
-```{r}
-world_with_fit <- world |>
-  mutate(
-    predicted = predict(m1),
-    residual = residuals(m1)
-  )
-
-world_with_fit |>
-  select(country, life_expectancy, predicted, residual) |>
-  arrange(desc(abs(residual))) |>
-  slice_head(n = 8)
-```
-
-What does a positive residual mean? What does a negative residual mean?
-
-## 6. Description is not causation
-
-Does the slope show that increasing GDP would *cause* life expectancy to increase? Explain.
-
-## DELIVERABLE — Regression Memo
-
-Submit a **Regression Memo** containing:
-
-- the research question;
-- the estimated intercept and slope;
-- one fitted regression figure;
-- a prediction for a substantively meaningful value of X;
-- one country with a large residual and an interpretation;
-- **150–220 words** explaining what the model can describe/predict and what it cannot establish causally.
-
-Render and submit the HTML.
+`face.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `PREDICTION/face.csv`. Sessions 6–7 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

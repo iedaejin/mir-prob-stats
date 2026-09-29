@@ -9,36 +9,35 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-survey <- read_csv("data/survey_attitudes.csv", show_col_types = FALSE)
-two <- survey |> filter(education %in% c("Bachelor", "Postgraduate"))
+star <- read_csv("data/STAR.csv", show_col_types = FALSE) %>%
+  mutate(classtype = factor(
+    classtype,
+    labels = c("Small class", "Regular class", "Regular class with aide")
+  )) %>%
+  filter(!is.na(g4reading), classtype %in% c("Small class", "Regular class"))
 lab_meta <- list(id = "lab05", title = "Estimation and hypothesis testing")
 lab_prompts <- c(
-  q1 = "A 95% confidence interval means…",
+  q1 = "A 95 percent confidence interval means…",
   q2 = "A p-value is…",
-  q3 = "Bachelor vs postgraduate mean support in this survey…",
-  q4 = "A tiny, very precise difference can be statistically detectable and still unimportant. Give one IR example."
+  q3 = "Small class versus regular class, fourth-grade reading…",
+  q4 = "A small, imprecise difference can fail to reject and still leave the policy question open. Say why, using this comparison."
 )
 ```
 
 ## What you will do
 
-Read an interval and a test as uncertainty, not as proof of a policy. Download the `.txt`.
+Read an interval and a test as uncertainty about the STAR reading gap, not as proof of a policy. Download the `.txt`.
 
-`t.test` subtracts in alphabetical order: Bachelor minus Postgraduate. A negative interval means postgraduates score higher.
-
-```{r test-ex, exercise=TRUE, exercise.lines=8}
-two |>
-  group_by(education) |>
-  summarise(mean_support = mean(support_international_cooperation), .groups = "drop")
-t.test(support_international_cooperation ~ education, data = two)
+```{r test-ex, exercise=TRUE, exercise.lines=3}
+t.test(g4reading ~ classtype, data = star)
 ```
 
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("About 95% of such intervals, built the same way, would cover the population parameter.", correct = TRUE),
-  answer("The parameter has a 95% chance of sitting in this one already-computed interval."),
-  answer("95% of the respondents agree."),
+  answer("In repeated samples, 95 percent of such intervals would cover the true difference.", correct = TRUE),
+  answer("The probability that this interval contains the true difference is 95 percent."),
+  answer("The effect is large because the interval is a confidence interval."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -47,7 +46,7 @@ question(
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("The probability, if the null were true, of a result at least this extreme.", correct = TRUE),
+  answer("The probability of a gap at least this large if the two means were equal.", correct = TRUE),
   answer("The probability that the null hypothesis is true."),
   answer("The size of the effect."),
   allow_retry = TRUE,
@@ -58,18 +57,27 @@ question(
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("Postgraduate respondents score higher on average (about 5.7 vs 5.2). That is a description of this sample, not a causal effect of education.", correct = TRUE),
-  answer("The test proves that postgraduate study causes support for cooperation."),
+  answer("The small-class mean is only a few points higher, and the 95 percent interval includes zero.", correct = TRUE),
+  answer("Small classes score about 30 points higher, and the interval excludes zero."),
+  answer("The means match exactly, so randomization failed."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
 ```
 
 ```{r q4}
-question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "Estimate, interval, and what failing to reject does not prove.",
+  trim = TRUE
+)
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -85,9 +93,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

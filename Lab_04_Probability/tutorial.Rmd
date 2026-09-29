@@ -9,18 +9,20 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
+voters <- read_csv("data/FLVoters.csv", show_col_types = FALSE) %>%
+  filter(!is.na(race), !is.na(gender))
 lab_meta <- list(id = "lab04", title = "Probability through simulation")
 lab_prompts <- c(
   q1 = "A probability of 0.30 for an event means…",
   q2 = "If you repeat a small sample many times, the estimated share…",
-  q3 = "P(escalation | crisis) compared with P(escalation)…",
-  q4 = "Why is \"conflict is likely\" not yet a probability statement?"
+  q3 = "P(Black | woman) in this voter file is…",
+  q4 = "Why is "conflict is likely" not yet a probability statement?"
 )
 ```
 
 ## What you will do
 
-Treat probability as a long-run share, then say what a conditional probability is not. Download the `.txt`.
+Treat probability as a long-run share, then read a conditional share in the Florida voter file. Download the `.txt`.
 
 ```{r sim, exercise=TRUE, exercise.lines=5}
 set.seed(4)
@@ -28,12 +30,17 @@ mean(rbinom(20, size = 1, prob = 0.30))
 mean(rbinom(5000, size = 1, prob = 0.30))
 ```
 
+```{r cond, exercise=TRUE, exercise.lines=4}
+mean(voters$race == "black")
+mean(voters$race[voters$gender == "f"] == "black")
+```
+
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("In a long run of identical trials, the event occurs about 30% of the time.", correct = TRUE),
-  answer("This particular crisis has a 30% chance of being important."),
-  answer("The null hypothesis is false with probability 0.30."),
+  answer("In a long run of identical trials, the event occurs about 30 percent of the time.", correct = TRUE),
+  answer("This particular trial is 30 percent true."),
+  answer("The event is rare, so we can ignore it."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -42,28 +49,38 @@ question(
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("Jumps around more when n = 20 than when n is large.", correct = TRUE),
-  answer("Equals 0.30 exactly in every sample of size 20."),
-  allow_retry = TRUE
+  answer("Jumps around. A long run sits near the probability.", correct = TRUE),
+  answer("Equals 0.30 in every sample of 20."),
+  answer("Becomes a causal effect once the sample is large."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("Can be much larger. That is not, by itself, proof that crises cause escalation.", correct = TRUE),
-  answer("Must equal P(crisis | escalation)."),
-  answer("Is an average treatment effect."),
+  answer("The share of women who are recorded as Black (about 0.14), not the share of all voters who are Black.", correct = TRUE),
+  answer("The same number as the share of voters who are Black women."),
+  answer("Proof that gender causes race."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
 ```
 
 ```{r q4}
-question_text(lab_prompts[["q4"]], open_answer(), trim = TRUE)
+question_text(
+  lab_prompts[["q4"]],
+  open_answer(),
+  placeholder = "A probability names an event and a reference set.",
+  trim = TRUE
+)
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -79,9 +96,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

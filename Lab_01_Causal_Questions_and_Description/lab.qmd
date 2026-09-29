@@ -10,108 +10,40 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-This lab follows the course sequence from **causal questions** to **describing a single variable**.
-
-You will learn to distinguish a causal question from a descriptive question, identify an outcome and an explanatory variable, and summarize one variable using numerical and graphical tools.
+You will separate a description from an effect question, then summarise one variable. The file is the résumé audit study in QSS 2.1–2.3. Each row is a fictitious résumé. `call` is 1 if the employer called back. `race` records whether the name on the résumé was assigned to sound Black or White. The name was randomized, so a gap in callback rates estimates discrimination in callback, not a difference in the résumé's qualifications.
 
 ## 1. Setup
 
 ```{r}
 library(tidyverse)
-world <- read_csv("data/country_indicators.csv")
+resume <- read_csv("data/resume.csv")
+glimpse(resume)
 ```
 
-## 2. From a substantive question to variables
+## 2. Two questions, two jobs
 
-Consider the question:
+- Descriptive: what share of these résumés received a callback?
+- Causal: what is the effect of a Black-sounding name, relative to a White-sounding name, on the callback?
 
-> Does economic development increase democratic governance?
-
-Write down:
-
-- **Outcome (Y):**
-- **Explanatory variable / treatment (X):**
-- **Two possible confounders:**
-- **Why is this a causal rather than purely descriptive question?**
-
-Do not run any model yet.
-
-## 3. Describe one variable first
-
-Start with `democracy_score`.
+The mean of a 0/1 variable is a proportion.
 
 ```{r}
-world |>
-  summarise(
-    n = n(),
-    mean = mean(democracy_score),
-    median = median(democracy_score),
-    sd = sd(democracy_score),
-    min = min(democracy_score),
-    max = max(democracy_score)
-  )
+resume %>%
+  summarise(callback = mean(call), n = n())
 ```
-
-What does each statistic tell you?
-
-## 4. Look at the distribution
 
 ```{r}
-ggplot(world, aes(x = democracy_score)) +
-  geom_histogram(bins = 10) +
-  labs(
-    title = "Democracy scores across countries",
-    x = "Democracy score",
-    y = "Count"
-  )
+resume %>%
+  group_by(race) %>%
+  summarise(callback = mean(call), n = n(), .groups = "drop")
 ```
 
-Is the distribution symmetric, skewed, clustered, or unusual?
+White-sounding names were called back about 9.6 percent of the time. Black-sounding names, about 6.4 percent. The difference is about 3.2 percentage points.
 
-## 5. Compare groups descriptively
+Only one name was placed on each résumé. The callback under the other name is the counterfactual, and it is not in the file. The randomized name makes the *average* gap an estimate of the average effect. It does not reveal the effect for any single résumé.
 
-```{r}
-world |>
-  group_by(region) |>
-  summarise(
-    mean_democracy = mean(democracy_score),
-    median_democracy = median(democracy_score),
-    n = n()
-  ) |>
-  arrange(desc(mean_democracy))
-```
+## Source
 
-Why should we be cautious about interpreting these regional differences causally?
-
-## 6. Choose your own variable
-
-Choose one of:
-
-- `gdp_per_capita`
-- `life_expectancy`
-- `trade_openness`
-- `military_spending_pct_gdp`
-- `un_voting_alignment`
-
-Create:
-
-1. a numerical summary;
-2. a histogram;
-3. a short substantive interpretation.
-
-## DELIVERABLE — Country Data Brief
-
-Submit a **one-page Country Data Brief** inside your rendered HTML.
-
-It must contain:
-
-- a clear descriptive research question;
-- **one figure**;
-- **at least three descriptive statistics**;
-- **120–180 words** interpreting the distribution;
-- one sentence explaining what **cannot** be inferred causally from the description.
-
-Your brief should be understandable to a policy reader who has not seen your R code.
+`resume.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `CAUSALITY/resume.csv` (Imai and Webb Williams). Session 2 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

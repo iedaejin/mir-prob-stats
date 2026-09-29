@@ -10,101 +10,34 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will analyze observational data, see how confounding can change an estimate, and compare unadjusted and adjusted regression models.
+You will compare a regression on the treatment with the same regression plus covariates. The file is again the social-pressure experiment, now as in QSS 4.4.1. The mailing was randomized, so the Neighbors coefficient is already a comparison created by design. Adding year of birth, household size, and whether the household voted in the 2004 primary should not move that coefficient much. That stability is what randomization buys. It is not a demonstration that "controlling for a few variables" repairs an observational study.
 
-## 1. Setup
+## 1. Two fits
+
+Control is the reference category.
 
 ```{r}
 library(tidyverse)
-aid <- read_csv("data/aid_observational.csv")
-```
-
-The data are synthetic and represent country-level foreign-aid allocations.
-
-Question:
-
-> Does receiving more foreign aid increase economic growth?
-
-## 2. Start with the raw association
-
-```{r}
-ggplot(aid, aes(x = aid_per_capita, y = economic_growth_pct)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(
-    title = "Foreign aid and economic growth",
-    x = "Aid per capita",
-    y = "Economic growth (%)"
-  )
-```
-
-## 3. Naive model
-
-```{r}
-m1 <- lm(economic_growth_pct ~ aid_per_capita, data = aid)
-summary(m1)
-```
-
-Interpret the aid coefficient.
-
-## 4. Think about selection into treatment
-
-Countries do not receive foreign aid randomly.
-
-In this teaching dataset, aid allocation is related to:
-
-- baseline need;
-- conflict intensity;
-- institutional quality.
-
-Explain why these variables might affect both aid receipt and subsequent economic growth.
-
-## 5. Adjust for confounders
-
-```{r}
+social <- read_csv("data/social.csv") %>%
+  mutate(messages = factor(
+    messages,
+    levels = c("Control", "Civic Duty", "Hawthorne", "Neighbors")
+  ))
+m1 <- lm(primary2006 ~ messages, data = social)
 m2 <- lm(
-  economic_growth_pct ~ aid_per_capita +
-    baseline_need +
-    conflict_intensity +
-    institutional_quality,
-  data = aid
+  primary2006 ~ messages + yearofbirth + hhsize + primary2004,
+  data = social
 )
-
-summary(m2)
+coef(m1)["messagesNeighbors"]
+coef(m2)["messagesNeighbors"]
 ```
 
-Compare the aid coefficient in `m1` and `m2`.
+The Neighbors coefficient is about 0.081 without the covariates and about 0.080 with them. Both say: assigned the Neighbors mailing, turnout is about 8 percentage points higher than under Control, holding the other terms in that model fixed.
 
-## 6. Model comparison
+`primary2004` is a strong predictor of 2006 turnout. It is not a confounder here, because the mailing was assigned at random. Adding it changes precision more than it changes the point estimate. In an observational study the same move can change the estimate a lot, and only for the confounders you actually measured. A control that sits on the path from the treatment to the outcome can make the estimate worse. "We controlled for everything" is not a design.
 
-```{r}
-coef(m1)["aid_per_capita"]
-coef(m2)["aid_per_capita"]
-```
+## Source
 
-Does adjustment change sign, size, or uncertainty?
-
-## 7. What assumptions remain?
-
-Regression adjustment does not automatically solve confounding.
-
-Name at least two assumptions or concerns that remain.
-
-## DELIVERABLE — Confounding Memo
-
-Submit a **Model Comparison Memo** containing:
-
-- one scatterplot;
-- the aid coefficient from the naive model;
-- the aid coefficient from the adjusted model;
-- a short table or clearly formatted comparison;
-- **200–280 words** explaining:
-  - why treatment assignment is not random;
-  - which variables are potential confounders;
-  - why the estimates changed;
-  - whether you are willing to make a causal claim, and under what assumptions.
-
-Submit the rendered HTML.
+`social.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `CAUSALITY/social.csv`. Sessions 18–19 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

@@ -10,114 +10,45 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will see reversion to the mean in simulated data and then revisit the distinction between correlation and causation.
+You will see reversion to the mean in two real elections, and you will keep that pattern separate from a causal claim. The files are the 2008 and 2012 state presidential results used in QSS 4.2.4. Obama's state vote share is very stable across the two years. The slope of the 2012 z-score on the 2008 z-score equals the correlation, about 0.98. Because that slope is below 1, a state that was extreme in 2008 is predicted to be slightly less extreme in 2012.
 
 ## 1. Setup
 
 ```{r}
 library(tidyverse)
-world <- read_csv("data/country_indicators.csv")
+pres08 <- read_csv("data/pres08.csv")
+pres12 <- read_csv("data/pres12.csv")
+pres <- inner_join(
+  pres08 %>% select(state, Obama08 = Obama),
+  pres12 %>% select(state, Obama12 = Obama),
+  by = "state"
+) %>%
+  mutate(
+    z08 = as.numeric(scale(Obama08)),
+    z12 = as.numeric(scale(Obama12))
+  )
+coef(lm(z12 ~ z08, data = pres))
 ```
 
-## 2. Reversion to the mean
-
-Suppose public approval of an international organization is measured twice. Each observed score contains a stable component plus temporary noise.
+## 2. The states that were low in 2008
 
 ```{r}
-set.seed(321)
-
-n <- 500
-stable_support <- rnorm(n, mean = 50, sd = 10)
-
-sim <- tibble(
-  wave1 = stable_support + rnorm(n, 0, 8),
-  wave2 = stable_support + rnorm(n, 0, 8)
-)
-```
-
-Select respondents with unusually high values at Wave 1.
-
-```{r}
-extreme_high <- sim |>
-  filter(wave1 >= quantile(wave1, 0.90))
-
-extreme_high |>
+pres %>%
+  filter(z08 < quantile(z08, 0.25)) %>%
   summarise(
-    mean_wave1 = mean(wave1),
-    mean_wave2 = mean(wave2)
+    n = n(),
+    mean_z08 = mean(z08),
+    mean_z12 = mean(z12),
+    share_higher = mean(z12 > z08)
   )
 ```
 
-Why is the second mean usually less extreme?
+Those states were about 1.18 standard deviations below the 2008 mean. In 2012 they were about 1.13 below the mean, and a majority of them moved up. Nothing in this comparison is a program that treated the low states. Part of an extreme 2008 share was particular to that year. A ministry that credits a later program for the improvement is ignoring that rival story.
 
-## 3. Visualize it
+A single cross-section, one year of countries, cannot show this. Reversion needs the same units measured twice.
 
-```{r}
-ggplot(sim, aes(x = wave1, y = wave2)) +
-  geom_point(alpha = 0.4) +
-  geom_abline(slope = 1, intercept = 0, linetype = 2) +
-  labs(
-    title = "Repeated measurements and reversion to the mean",
-    x = "Wave 1",
-    y = "Wave 2"
-  )
-```
+## Source
 
-## 4. Correlation and causation
-
-Now return to the fictional country file. A row is not a real state.
-
-```{r}
-m_naive <- lm(life_expectancy ~ democracy_score, data = world)
-summary(m_naive)
-```
-
-Add economic development:
-
-```{r}
-m_adjusted <- lm(
-  life_expectancy ~ democracy_score + log(gdp_per_capita),
-  data = world
-)
-summary(m_adjusted)
-```
-
-Compare the democracy coefficient across the two models.
-
-## 5. Causal diagnosis
-
-Draw or describe the causal structure you think could produce these associations.
-
-For example:
-
-\[
-GDP \rightarrow Democracy
-\]
-
-\[
-GDP \rightarrow Life\ Expectancy
-\]
-
-\[
-Democracy \rightarrow Life\ Expectancy\ ?
-\]
-
-Why can adjustment change a coefficient?
-
-## DELIVERABLE — Causal Diagnosis
-
-Submit a **Causal Diagnosis** containing:
-
-- the democracy coefficient from the naive model;
-- the democracy coefficient from the adjusted model;
-- a simple causal diagram drawn by hand and inserted as an image **or** written using arrows in the notebook;
-- **180–250 words** explaining:
-  - why the coefficient changed;
-  - what confounding means in this example;
-  - why neither regression alone proves causality;
-  - one type of evidence that would strengthen a causal claim.
-
-Submit the rendered HTML.
+`pres08.csv` and `pres12.csv` are taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `PREDICTION/`. Session 13 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

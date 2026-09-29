@@ -9,11 +9,11 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-exp <- read_csv("data/diplomacy_experiment.csv", show_col_types = FALSE)
+social <- read_csv("data/social.csv", show_col_types = FALSE)
 lab_meta <- list(id = "lab07", title = "Randomized experiments")
 lab_prompts <- c(
-  q1 = "What was randomly assigned in this teaching experiment?",
-  q2 = "The difference in mean post-support (message minus control) is about…",
+  q1 = "What was randomly assigned in this experiment?",
+  q2 = "The difference in turnout (Neighbors minus Control) is about…",
   q3 = "Under random assignment, that difference estimates…",
   q4 = "Name one thing this estimate does not automatically give you."
 )
@@ -21,20 +21,21 @@ lab_prompts <- c(
 
 ## What you will do
 
-Read a difference in means as an effect of assignment. Download the `.txt`.
+Read a difference in means as an effect of assignment in the social-pressure experiment. Download the `.txt`.
 
 ```{r means, exercise=TRUE, exercise.lines=6}
-exp |>
-  group_by(treatment_message) |>
-  summarise(mean_y = mean(post_support_diplomatic_cooperation), n = n(), .groups = "drop")
+social %>%
+  filter(messages %in% c("Control", "Neighbors")) %>%
+  group_by(messages) %>%
+  summarise(turnout = mean(primary2006), n = n(), .groups = "drop")
 ```
 
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("A diplomatic message (treatment_message).", correct = TRUE),
-  answer("Support for cooperation after the message."),
-  answer("The participant's age."),
+  answer("The mailing (messages).", correct = TRUE),
+  answer("Whether the household voted in 2006."),
+  answer("The household's size."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -43,9 +44,9 @@ question(
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("0.8 points on the support scale (about 5.85 vs 5.03).", correct = TRUE),
-  answer("8 percentage points of turnout."),
-  answer("Zero. Randomization forces the means to match."),
+  answer("8 percentage points (about 37.8 percent versus 29.7 percent).", correct = TRUE),
+  answer("8 votes in the whole experiment."),
+  answer("Zero. Randomization forces the turnout rates to match."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -54,8 +55,8 @@ question(
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("The average effect of being assigned the message, in this sample.", correct = TRUE),
-  answer("The effect of actually reading and agreeing with the message, for every diplomat."),
+  answer("The average effect of being assigned the Neighbors mailing, in this experiment.", correct = TRUE),
+  answer("The effect of reading the mailing and agreeing with it, for every household in the country."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -65,12 +66,15 @@ question(
 question_text(
   lab_prompts[["q4"]],
   open_answer(),
-  placeholder = "External validity, perfect compliance, or a mechanism.",
+  placeholder = "Another election, perfect compliance, or the mechanism.",
   trim = TRUE
 )
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -86,9 +90,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+

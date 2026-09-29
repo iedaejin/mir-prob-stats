@@ -10,101 +10,61 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
 By the end of this lab you should be able to:
 
 - open and run an R code chunk;
 - import a `.csv` file;
-- inspect a data frame;
+- name the unit of each row;
 - calculate a simple summary;
-- make a basic plot with `ggplot2`;
-- render a Quarto document to HTML.
+- make a basic plot with `ggplot2`.
+
+The file is the UN world-population series used in QSS Chapter 1. `world.pop` is recorded in thousands of people. One row is a year, not a country.
 
 ## 1. Setup
 
 ```{r}
 library(tidyverse)
+un <- read_csv("data/UNpop.csv")
+un <- un %>% mutate(pop_millions = world.pop / 1000)
+un
 ```
 
-## 2. Import the data
-
-The dataset contains synthetic indicators for 50 fictional countries, labeled Country 01, Country 02, and so on. These are **teaching data**, not real country estimates. The `region` column is a grouping label in this file, not a claim about a real state.
+## 2. What is a row?
 
 ```{r}
-world <- read_csv("data/country_indicators.csv")
+glimpse(un)
+nrow(un)
 ```
 
-Inspect the first rows:
+Seven rows. The series runs from 1950 to 2010, once a decade.
+
+## 3. A summary and a plot
 
 ```{r}
-head(world)
-```
-
-How many countries and variables are in the dataset?
-
-```{r}
-dim(world)
-```
-
-## 3. Ask R a simple question
-
-What is the average democracy score?
-
-```{r}
-mean(world$democracy_score)
-```
-
-Now calculate the median democracy score.
-
-```{r}
-# Your code here
-```
-
-## 4. Make your first figure
-
-```{r}
-ggplot(world, aes(x = democracy_score)) +
-  geom_histogram(bins = 10) +
-  labs(
-    title = "Distribution of democracy scores",
-    x = "Democracy score",
-    y = "Number of countries"
+un %>%
+  summarise(
+    mean_millions = mean(pop_millions),
+    median_millions = median(pop_millions),
+    first = min(pop_millions),
+    last = max(pop_millions)
   )
 ```
 
-## 5. Filter the data
-
-Choose one region and inspect only those countries.
-
 ```{r}
-world |>
-  filter(region == "Europe")
+ggplot(un, aes(x = year, y = pop_millions)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Year",
+    y = "World population (millions)",
+    title = "UN world population, 1950–2010"
+  )
 ```
 
-Change `"Europe"` to another region.
+The line rises in every decade. That is a description of this series. It does not say which policy caused the increase.
 
-## 6. A first substantive question
+## Source
 
-Which five countries in this teaching dataset have the highest GDP per capita?
-
-```{r}
-world |>
-  arrange(desc(gdp_per_capita)) |>
-  select(country, gdp_per_capita) |>
-  slice_head(n = 5)
-```
-
-## DELIVERABLE — Your first data snapshot
-
-Create a short **Data Snapshot** containing:
-
-1. the number of countries in the dataset;
-2. the mean and median of one variable of your choice;
-3. one histogram of that variable;
-4. **80–120 words** explaining what the distribution looks like and whether the mean or median is more informative.
-
-Render the notebook to HTML and submit the HTML file.
-
-> **Before submitting:** check that your code runs from top to bottom and that your figure is visible.
+`UNpop.csv` is taken unchanged from Kosuke Imai and Nora Webb Williams, *Quantitative Social Science* ([kosukeimai/qss](https://github.com/kosukeimai/qss), file `INTRO/UNpop.csv`), the dataset linked for Session 1 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

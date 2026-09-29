@@ -1,6 +1,6 @@
 ---
 title: "Lab 04 — Probability Through Simulation"
-subtitle: "Sessions 9–10: Probability Theory, Parts 1–2"
+subtitle: "Sessions 9–10: Probability, Parts 1–2"
 format:
   html:
     toc: true
@@ -10,101 +10,35 @@ execute:
   message: false
 ---
 
-
 ## Learning goals
 
-You will use simulation to understand probability, conditional probability, random variables, and expected values.
+You will treat a probability as a long-run share, then compute a conditional probability on a real voter file. The simulation is the QSS 6.1 idea. The file is the Florida voter sample in QSS 6.2 (`FLVoters.csv`, 10,000 records, with surname, county, age, gender, and race).
 
-## 1. Setup
+## 1. A long-run share
+
+Suppose 30 percent of draws are "yes." A short run jumps around. A long run sits near 0.30.
 
 ```{r}
 library(tidyverse)
-survey <- read_csv("data/survey_attitudes.csv")
-```
-
-## 2. Probability as long-run frequency
-
-Imagine that 30% of voters support a diplomatic initiative. Simulate 1,000 voters.
-
-```{r}
-support <- rbinom(1000, size = 1, prob = 0.30)
-mean(support)
-```
-
-Repeat the simulation. Why does the answer change slightly?
-
-## 3. Sample size and stability
-
-```{r}
+set.seed(4)
 mean(rbinom(20, size = 1, prob = 0.30))
-mean(rbinom(200, size = 1, prob = 0.30))
-mean(rbinom(20000, size = 1, prob = 0.30))
+mean(rbinom(5000, size = 1, prob = 0.30))
 ```
 
-What happens as the number of trials increases?
-
-## 4. Conditional probability in an IR context
-
-Define “high support for international cooperation” as a score of 7 or more.
+## 2. Conditional probability in the voter file
 
 ```{r}
-survey <- survey |>
-  mutate(high_support = support_international_cooperation >= 7)
+voters <- read_csv("data/FLVoters.csv") %>%
+  filter(!is.na(race), !is.na(gender))
 ```
-
-Estimate:
 
 ```{r}
-mean(survey$high_support)
+mean(voters$race == "black")
+mean(voters$race[voters$gender == "f"] == "black")
 ```
 
-Now estimate the probability among postgraduate respondents.
+About 13 percent of these voters are recorded as Black. Among women, the share is about 14 percent. `P(Black | woman)` is the share of women who are Black. It is not the share of all voters who are Black, and it is not the share who are Black women.
 
-```{r}
-survey |>
-  filter(education == "Postgraduate") |>
-  summarise(prob_high_support = mean(high_support))
-```
+## Source
 
-How is this different from the unconditional probability?
-
-## 5. A random variable and expectation
-
-Suppose the number of diplomatic agreements signed in a year follows a binomial model with 10 opportunities and probability 0.4.
-
-```{r}
-agreements <- rbinom(10000, size = 10, prob = 0.4)
-
-mean(agreements)
-var(agreements)
-```
-
-What is the theoretical expected value \(E[X]\) for a Binomial(10, 0.4)?
-
-## 6. Visualize the random variable
-
-```{r}
-tibble(agreements = agreements) |>
-  ggplot(aes(x = agreements)) +
-  geom_histogram(binwidth = 1, boundary = -0.5) +
-  labs(
-    title = "Simulated number of diplomatic agreements",
-    x = "Agreements",
-    y = "Frequency"
-  )
-```
-
-## DELIVERABLE — Probability Simulation Note
-
-Create a short simulation answering:
-
-> How does sample size affect the stability of an estimated probability?
-
-Your deliverable must include:
-
-- estimates from **three different sample sizes**;
-- one figure;
-- the theoretical probability being estimated;
-- **120–180 words** explaining why estimates vary and why larger samples are more stable.
-
-Submit the rendered HTML.
+`FLVoters.csv` is taken unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss) `PROBABILITY/FLVoters.csv`. Sessions 9–10 in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). See `data/SOURCE.txt`.

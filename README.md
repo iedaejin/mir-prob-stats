@@ -23,9 +23,23 @@ All labs use only:
 The statistical functions used for inference/regression are from base R (`lm`, `t.test`, `confint`, `predict`).
 
 ## Data
-All supplied data are synthetic teaching examples. They are not empirical evidence.
 
-Rows in `country_indicators.csv` are labeled Country 01, Country 02, and so on. They are not real states. Do not describe a row as a fact about a real country. The `region` column is only a grouping label in this file.
+Each lab uses the real dataset named for its sessions in [mir-prob-stats-QQS](https://github.com/iedaejin/mir-prob-stats-QQS). The files are copied unchanged from [kosukeimai/qss](https://github.com/kosukeimai/qss), the supplementary materials for Kosuke Imai and Nora Webb Williams, *Quantitative Social Science: An Introduction in tidyverse* (Princeton University Press).
+
+Copyright in those files remains with the authors. They are included under the [GNU General Public License, version 2](https://github.com/kosukeimai/qss/blob/master/LICENSE); see `LICENSE`. A `data/SOURCE.txt` in each lab repeats that notice so a folder uploaded to Posit Cloud still carries it. The lab text and tutorials are course material for this MIR course. They are not a work of the QSS authors.
+
+| Lab | File | QSS |
+|---|---|---|
+| 00 | `UNpop.csv` | Ch. 1 |
+| 01 | `resume.csv` | 2.1–2.3 |
+| 02 | `congress.csv` | 3.6–3.7 |
+| 03 | `face.csv` | 4.2 |
+| 04 | `FLVoters.csv` | 6.2 |
+| 05 | `STAR.csv` | 7.1 |
+| 06 | `pres08.csv`, `pres12.csv` | 4.2.4 |
+| 07–09 | `social.csv` | 2.4, 4.4.1, 4.4.2 |
+
+Copies also sit in `shared_data/`.
 
 ## Lab sequence
 - Lab 00 — Welcome to R (Session 1)

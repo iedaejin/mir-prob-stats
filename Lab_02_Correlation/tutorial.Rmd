@@ -9,40 +9,43 @@ library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
-world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
+congress <- read_csv("data/congress.csv", show_col_types = FALSE)
+congress112 <- congress %>%
+  filter(congress == 112, party %in% c("Democrat", "Republican"))
 lab_meta <- list(id = "lab02", title = "Correlation")
 lab_prompts <- c(
-  q1 = "GDP per capita and life expectancy in this file are…",
-  q2 = "What does a positive r tell you?",
+  q1 = "In the 112th Congress, dwnom1 and dwnom2 are…",
+  q2 = "What does a positive correlation tell you?",
   q3 = "Which sentence is acceptable?",
-  q4 = "Name one reason a strong correlation might not be a causal effect."
+  q4 = "Name one reason this correlation is not a causal effect."
 )
 ```
 
 ## What you will do
 
-Rows are labeled Country 01, Country 02, and so on. They are fictional, not real states. Read a correlation. Do not turn it into a cause. Then download the `.txt`.
+Read a correlation of two roll-call scores. Do not turn it into a cause. Then download the `.txt`.
 
 ```{r cor-ex, exercise=TRUE, exercise.lines=3}
-cor(world$gdp_per_capita, world$life_expectancy)
+cor(congress112$dwnom1, congress112$dwnom2)
 ```
 
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("Positively correlated (r about 0.75).", correct = TRUE),
-  answer("Negatively correlated."),
-  answer("Uncorrelated (r about 0)."),
-  allow_retry = TRUE
+  answer("Weakly positively associated (r is about 0.12).", correct = TRUE),
+  answer("Almost perfectly associated (r is about 1)."),
+  answer("A causal effect of party on ideology."),
+  allow_retry = TRUE,
+  random_answer_order = TRUE
 )
 ```
 
 ```{r q2}
 question(
   lab_prompts[["q2"]],
-  answer("Above-average X tends to come with above-average Y in these data.", correct = TRUE),
-  answer("Raising X would raise Y by r units."),
-  answer("The p-value is r."),
+  answer("Higher values on one score tend to come with higher values on the other.", correct = TRUE),
+  answer("Raising one score would raise the other."),
+  answer("The two scores are the same variable."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -51,8 +54,8 @@ question(
 ```{r q3}
 question(
   lab_prompts[["q3"]],
-  answer("In these 50 countries, GDP per capita and life expectancy move together (r about 0.75).", correct = TRUE),
-  answer("The correlation proves that GDP causes longer lives."),
+  answer("In this Congress, the two NOMINATE scores are weakly associated.", correct = TRUE),
+  answer("The correlation shows that dimension 1 causes dimension 2."),
   allow_retry = TRUE,
   random_answer_order = TRUE
 )
@@ -62,12 +65,15 @@ question(
 question_text(
   lab_prompts[["q4"]],
   open_answer(),
-  placeholder = "A confounder, reverse causality, or a selected sample.",
+  placeholder = "No intervention, no comparison created by design.",
   trim = TRUE
 )
 ```
 
+
 ## Submit
+
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -83,9 +89,10 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = learnr::get_tutorial_state(),
+      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
       prompts = lab_prompts
     )
   }
 )
 ```
+
