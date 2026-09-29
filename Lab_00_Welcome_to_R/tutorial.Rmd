@@ -8,7 +8,7 @@ runtime: shiny_prerendered
 library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-source("../R/lab_submission.R")
+source("lab_submission.R")
 world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
 lab_meta <- list(id = "lab00", title = "Welcome to R")
 lab_prompts <- c(
@@ -21,7 +21,7 @@ lab_prompts <- c(
 
 ## What you will do
 
-Load the teaching country file, name the unit of analysis, and read a simple summary. At the end, download a `.txt` with your name, the date, and your answers, and upload that file.
+Rows are labeled Country 01, Country 02, and so on. They are fictional, not real states. Load the teaching country file, name the unit of analysis, and read a simple summary. At the end, download a `.txt` with your name, the date, and your answers, and upload that file.
 
 ```{r peek, exercise=TRUE, exercise.lines=4}
 glimpse(world)
@@ -95,7 +95,7 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      state = learnr::get_tutorial_state(),
       prompts = lab_prompts
     )
   }

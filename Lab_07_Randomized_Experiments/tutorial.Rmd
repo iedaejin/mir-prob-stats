@@ -8,7 +8,7 @@ runtime: shiny_prerendered
 library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-source("../R/lab_submission.R")
+source("lab_submission.R")
 exp <- read_csv("data/diplomacy_experiment.csv", show_col_types = FALSE)
 lab_meta <- list(id = "lab07", title = "Randomized experiments")
 lab_prompts <- c(
@@ -86,7 +86,7 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      state = learnr::get_tutorial_state(),
       prompts = lab_prompts
     )
   }

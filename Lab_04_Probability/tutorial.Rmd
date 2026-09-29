@@ -8,7 +8,7 @@ runtime: shiny_prerendered
 library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-source("../R/lab_submission.R")
+source("lab_submission.R")
 lab_meta <- list(id = "lab04", title = "Probability through simulation")
 lab_prompts <- c(
   q1 = "A probability of 0.30 for an event means…",
@@ -79,7 +79,7 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      state = learnr::get_tutorial_state(),
       prompts = lab_prompts
     )
   }

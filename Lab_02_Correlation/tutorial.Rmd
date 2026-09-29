@@ -8,7 +8,7 @@ runtime: shiny_prerendered
 library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-source("../R/lab_submission.R")
+source("lab_submission.R")
 world <- read_csv("data/country_indicators.csv", show_col_types = FALSE)
 lab_meta <- list(id = "lab02", title = "Correlation")
 lab_prompts <- c(
@@ -21,7 +21,7 @@ lab_prompts <- c(
 
 ## What you will do
 
-Read a correlation. Do not turn it into a cause. Then download the `.txt`.
+Rows are labeled Country 01, Country 02, and so on. They are fictional, not real states. Read a correlation. Do not turn it into a cause. Then download the `.txt`.
 
 ```{r cor-ex, exercise=TRUE, exercise.lines=3}
 cor(world$gdp_per_capita, world$life_expectancy)
@@ -83,7 +83,7 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      state = learnr::get_tutorial_state(),
       prompts = lab_prompts
     )
   }

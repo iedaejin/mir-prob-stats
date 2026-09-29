@@ -23,7 +23,9 @@ All labs use only:
 The statistical functions used for inference/regression are from base R (`lm`, `t.test`, `confint`, `predict`).
 
 ## Data
-All supplied data are synthetic but constructed to resemble plausible international-relations teaching examples. They should not be interpreted as real country estimates or empirical evidence.
+All supplied data are synthetic teaching examples. They are not empirical evidence.
+
+Rows in `country_indicators.csv` are labeled Country 01, Country 02, and so on. They are not real states. Do not describe a row as a fact about a real country. The `region` column is only a grouping label in this file.
 
 ## Lab sequence
 - Lab 00 — Welcome to R (Session 1)

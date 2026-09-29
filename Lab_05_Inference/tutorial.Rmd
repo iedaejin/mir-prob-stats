@@ -8,7 +8,7 @@ runtime: shiny_prerendered
 library(learnr)
 library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-source("../R/lab_submission.R")
+source("lab_submission.R")
 survey <- read_csv("data/survey_attitudes.csv", show_col_types = FALSE)
 two <- survey |> filter(education %in% c("Bachelor", "Postgraduate"))
 lab_meta <- list(id = "lab05", title = "Estimation and hypothesis testing")
@@ -24,7 +24,12 @@ lab_prompts <- c(
 
 Read an interval and a test as uncertainty, not as proof of a policy. Download the `.txt`.
 
-```{r test-ex, exercise=TRUE, exercise.lines=3}
+`t.test` subtracts in alphabetical order: Bachelor minus Postgraduate. A negative interval means postgraduates score higher.
+
+```{r test-ex, exercise=TRUE, exercise.lines=8}
+two |>
+  group_by(education) |>
+  summarise(mean_support = mean(support_international_cooperation), .groups = "drop")
 t.test(support_international_cooperation ~ education, data = two)
 ```
 
@@ -80,7 +85,7 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      state = learnr::get_tutorial_state(),
       prompts = lab_prompts
     )
   }

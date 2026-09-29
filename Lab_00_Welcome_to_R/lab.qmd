@@ -30,7 +30,7 @@ library(tidyverse)
 
 ## 2. Import the data
 
-The dataset contains synthetic indicators for 50 countries. These are **teaching data**, not real country estimates.
+The dataset contains synthetic indicators for 50 fictional countries, labeled Country 01, Country 02, and so on. These are **teaching data**, not real country estimates. The `region` column is a grouping label in this file, not a claim about a real state.
 
 ```{r}
 world <- read_csv("data/country_indicators.csv")

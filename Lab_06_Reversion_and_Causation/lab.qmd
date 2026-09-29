@@ -68,7 +68,7 @@ ggplot(sim, aes(x = wave1, y = wave2)) +
 
 ## 4. Correlation and causation
 
-Now return to country data.
+Now return to the fictional country file. A row is not a real state.
 
 ```{r}
 m_naive <- lm(life_expectancy ~ democracy_score, data = world)
