@@ -77,7 +77,7 @@ question_text(
 
 ## Submit
 
-Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers.
+Type your name, download the text file, and upload it. Submit the questions first so the file contains your answers. If nothing downloads, the same `.txt` is in this folder: select it in the Files pane and choose Export.
 
 ```{r submit-ui, echo=FALSE}
 shiny::textInput("student_name", "Your name", placeholder = "Name Surname")
@@ -93,8 +93,14 @@ output$download_txt <- shiny::downloadHandler(
       name = input$student_name,
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
-      state = shiny::reactiveValuesToList(learnr::get_tutorial_state()),
+      state = learnr::get_tutorial_state(),
       prompts = lab_prompts
+    )
+    # The viewer in Posit Cloud often blocks the browser download.
+    file.copy(
+      file,
+      lab_submission_filename(input$student_name, lab_meta$id),
+      overwrite = TRUE
     )
   }
 )
