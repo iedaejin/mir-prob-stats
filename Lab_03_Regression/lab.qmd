@@ -12,7 +12,7 @@ execute:
 
 ## Learning goals
 
-You will fit one line, read the slope as an association, and separate a fitted value from an effect. The file is the candidate-face study in QSS 4.2. Subjects rated how competent unfamiliar candidates looked. `d.comp` is the Democrat's competence rating. The Democratic margin in the vote is built from the vote counts.
+You will fit one line, read the slope as an association, and separate a fitted value from an effect. The file is the candidate-face study in QSS 4.2. Subjects rated how competent unfamiliar candidates looked. `d.comp` is the Democrat's competence rating: the share of subjects who judged the Democrat more competent, so it lies between 0 and 1. The Democratic margin in the vote is built from the vote counts.
 
 A face rating that predicts vote share is not a policy lever.
 
@@ -30,7 +30,7 @@ fit <- lm(diff.share ~ d.comp, data = face)
 coef(fit)
 ```
 
-The slope is about 0.66. In this sample, a one-point higher Democratic competence rating goes with about a 0.66 higher Democratic margin in vote share. The correlation is about 0.43. That is in-sample association.
+The slope is about 0.66. The rating is a share, and in this sample it runs from about 0.06 to 0.90, so read the slope in steps of 0.1: a rating 0.1 higher goes with a Democratic margin in vote share about 0.066 higher (6.6 percentage points). The correlation is about 0.43. That is in-sample association.
 
 ```{r}
 ggplot(face, aes(x = d.comp, y = diff.share)) +

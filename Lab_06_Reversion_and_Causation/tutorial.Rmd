@@ -15,7 +15,7 @@ pres <- inner_join(
   by = "state"
 ) %>%
   mutate(z08 = as.numeric(scale(Obama08)), z12 = as.numeric(scale(Obama12)))
-lab_meta <- list(id = "lab06", title = "Reversion to the mean")
+lab_meta <- list(id = "lab06", title = "Reversion to the mean", open = "q4")
 lab_prompts <- c(
   q1 = "States in the bottom quarter of Obama's 2008 share are, in 2012,…",
   q2 = "That small move toward the middle happens even when…",
@@ -91,7 +91,8 @@ output$download_txt <- shiny::downloadHandler(
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
       state = learnr::get_tutorial_state(),
-      prompts = lab_prompts
+      prompts = lab_prompts,
+      open = lab_meta$open
     )
     # The viewer in Posit Cloud often blocks the browser download.
     file.copy(

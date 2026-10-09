@@ -10,7 +10,7 @@ library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
 resume <- read_csv("data/resume.csv", show_col_types = FALSE)
-lab_meta <- list(id = "lab01", title = "Causal questions and description")
+lab_meta <- list(id = "lab01", title = "Causal questions and description", open = "q4")
 lab_prompts <- c(
   q1 = "Which question is a causal question?",
   q2 = "The callback gap (White-sounding names minus Black-sounding names) is about…",
@@ -91,7 +91,8 @@ output$download_txt <- shiny::downloadHandler(
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
       state = learnr::get_tutorial_state(),
-      prompts = lab_prompts
+      prompts = lab_prompts,
+      open = lab_meta$open
     )
     # The viewer in Posit Cloud often blocks the browser download.
     file.copy(

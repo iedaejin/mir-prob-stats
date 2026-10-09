@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 source("lab_submission.R")
 un <- read_csv("data/UNpop.csv", show_col_types = FALSE) %>%
   mutate(pop_millions = world.pop / 1000)
-lab_meta <- list(id = "lab00", title = "Welcome to R")
+lab_meta <- list(id = "lab00", title = "Welcome to R", open = "q4")
 lab_prompts <- c(
   q1 = "What does one row of this dataset represent?",
   q2 = "How many rows are in the file?",
@@ -50,12 +50,19 @@ question(
 )
 ```
 
-```{r gdp-summary, exercise=TRUE, exercise.lines=6}
+```{r pop-summary, exercise=TRUE, exercise.lines=6}
 un %>%
   summarise(
     mean_millions = mean(pop_millions),
     median_millions = median(pop_millions)
   )
+```
+
+```{r pop-plot, exercise=TRUE, exercise.lines=6}
+ggplot(un, aes(x = year, y = pop_millions)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Year", y = "World population (millions)")
 ```
 
 ```{r q3}
@@ -98,7 +105,8 @@ output$download_txt <- shiny::downloadHandler(
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
       state = learnr::get_tutorial_state(),
-      prompts = lab_prompts
+      prompts = lab_prompts,
+      open = lab_meta$open
     )
     # The viewer in Posit Cloud often blocks the browser download.
     file.copy(

@@ -12,7 +12,7 @@ source("lab_submission.R")
 congress <- read_csv("data/congress.csv", show_col_types = FALSE)
 congress112 <- congress %>%
   filter(congress == 112, party %in% c("Democrat", "Republican"))
-lab_meta <- list(id = "lab02", title = "Correlation")
+lab_meta <- list(id = "lab02", title = "Correlation", open = "q4")
 lab_prompts <- c(
   q1 = "In the 112th Congress, dwnom1 and dwnom2 are…",
   q2 = "What does a positive correlation tell you?",
@@ -90,7 +90,8 @@ output$download_txt <- shiny::downloadHandler(
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
       state = learnr::get_tutorial_state(),
-      prompts = lab_prompts
+      prompts = lab_prompts,
+      open = lab_meta$open
     )
     # The viewer in Posit Cloud often blocks the browser download.
     file.copy(

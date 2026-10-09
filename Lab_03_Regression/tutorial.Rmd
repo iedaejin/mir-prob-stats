@@ -16,7 +16,7 @@ face <- read_csv("data/face.csv", show_col_types = FALSE) %>%
     diff.share = d.share - r.share
   )
 fit <- lm(diff.share ~ d.comp, data = face)
-lab_meta <- list(id = "lab03", title = "Regression for description and prediction")
+lab_meta <- list(id = "lab03", title = "Regression for description and prediction", open = "q4")
 lab_prompts <- c(
   q1 = "The slope of the Democratic vote margin on the competence rating is about…",
   q2 = "A fitted value is…",
@@ -36,8 +36,8 @@ coef(fit)
 ```{r q1}
 question(
   lab_prompts[["q1"]],
-  answer("0.66. A one-point higher competence rating goes with a vote margin about 0.66 higher.", correct = TRUE),
-  answer("71. The line ignores the rating."),
+  answer("0.66. A competence rating 0.1 higher goes with a vote margin about 0.066 higher.", correct = TRUE),
+  answer("0.66. A competence rating one point higher goes with a vote margin 66 percentage points higher."),
   answer("1. The rating determines the vote."),
   allow_retry = TRUE,
   random_answer_order = TRUE
@@ -94,7 +94,8 @@ output$download_txt <- shiny::downloadHandler(
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
       state = learnr::get_tutorial_state(),
-      prompts = lab_prompts
+      prompts = lab_prompts,
+      open = lab_meta$open
     )
     # The viewer in Posit Cloud often blocks the browser download.
     file.copy(

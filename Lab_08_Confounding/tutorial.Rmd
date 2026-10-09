@@ -14,12 +14,12 @@ social <- read_csv("data/social.csv", show_col_types = FALSE) %>%
     messages,
     levels = c("Control", "Civic Duty", "Hawthorne", "Neighbors")
   ))
-lab_meta <- list(id = "lab08", title = "Controlling for confounders")
+lab_meta <- list(id = "lab08", title = "Controlling for confounders", open = "q4")
 lab_prompts <- c(
   q1 = "With Control as the reference, the Neighbors coefficient is…",
   q2 = "After adding year of birth, household size, and 2004 turnout, the Neighbors coefficient…",
   q3 = "A confounder is…",
-  q4 = "Why is "we controlled for everything" not a causal proof?"
+  q4 = "Why is “we controlled for everything” not a causal proof?"
 )
 ```
 
@@ -38,7 +38,7 @@ coef(m2)["messagesNeighbors"]
 question(
   lab_prompts[["q1"]],
   answer("About 0.08. Assigned the Neighbors mailing, turnout is about 8 points higher than Control.", correct = TRUE),
-  answer("About 0.80. The mailing multiplies turnout by four."),
+  answer("About 0.38. That is the turnout rate under the Neighbors mailing."),
   answer("Zero, because the model includes an intercept."),
   allow_retry = TRUE,
   random_answer_order = TRUE
@@ -96,7 +96,8 @@ output$download_txt <- shiny::downloadHandler(
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
       state = learnr::get_tutorial_state(),
-      prompts = lab_prompts
+      prompts = lab_prompts,
+      open = lab_meta$open
     )
     # The viewer in Posit Cloud often blocks the browser download.
     file.copy(
