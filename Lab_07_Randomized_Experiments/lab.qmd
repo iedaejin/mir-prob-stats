@@ -12,7 +12,7 @@ execute:
 
 ## Learning goals
 
-You will read a difference in means as an effect of assignment. The file is the social-pressure turnout experiment in QSS 2.4 (Gerber, Green, and Larimer). Households were randomly assigned to a mailing. `messages` is the mailing. `primary2006` is 1 if someone in the household voted in the 2006 primary. The comparison below is the Neighbors mailing against Control.
+You will read a difference in means as an effect of assignment. The file is the social-pressure turnout experiment in QSS 2.4 (Gerber, Green, and Larimer). Households were randomly assigned to a mailing. Each row is one registered voter in those households. `messages` is the mailing the household received. `primary2006` is 1 if that voter voted in the 2006 primary. The comparison below is the Neighbors mailing against Control.
 
 ## 1. Setup
 

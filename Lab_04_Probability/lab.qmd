@@ -30,7 +30,10 @@ mean(rbinom(5000, size = 1, prob = 0.30))
 ```{r}
 voters <- read_csv("data/FLVoters.csv") %>%
   filter(!is.na(race), !is.na(gender))
+nrow(voters)
 ```
+
+The filter drops the records with no race or no gender. 9,118 of the 10,000 remain, and every share below is a share of those.
 
 ```{r}
 mean(voters$race == "black")

@@ -15,7 +15,7 @@ star <- read_csv("data/STAR.csv", show_col_types = FALSE) %>%
     labels = c("Small class", "Regular class", "Regular class with aide")
   )) %>%
   filter(!is.na(g4reading), classtype %in% c("Small class", "Regular class"))
-lab_meta <- list(id = "lab05", title = "Estimation and hypothesis testing")
+lab_meta <- list(id = "lab05", title = "Estimation and hypothesis testing", open = "q4")
 lab_prompts <- c(
   q1 = "A 95 percent confidence interval means…",
   q2 = "A p-value is…",
@@ -94,7 +94,8 @@ output$download_txt <- shiny::downloadHandler(
       lab_id = lab_meta$id,
       lab_title = lab_meta$title,
       state = learnr::get_tutorial_state(),
-      prompts = lab_prompts
+      prompts = lab_prompts,
+      open = lab_meta$open
     )
     # The viewer in Posit Cloud often blocks the browser download.
     file.copy(
